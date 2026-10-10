@@ -1,21 +1,19 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { parseFeatureComment, assertArchivedFeature, evaluate, run } = require('./sdd-policy.cjs');
+const { parseFeatureDescription, assertArchivedFeature, evaluate, run } = require('./sdd-policy.cjs');
 
 const metadata = { schema_version: 1, feature_id: '1-initial-scaffolding', feature_status: 'archived', required_review_state: 'APPROVED' };
 const comment = data => `<!-- sdd-feature:start -->\n\`\`\`json\n${JSON.stringify(data)}\n\`\`\`\n<!-- sdd-feature:end -->`;
 const state = { schema_version: 1, feature_id: metadata.feature_id, status: 'archived', operation: { command: 'archive', phase: 'complete' }, verification: { status: 'pass' } };
 
 function fixture() {
-  const pr = { number: 1, state: 'open', draft: false, user: { id: 1 }, base: { ref: 'main' }, head: { sha: 'abc123', repo: { name: 'fork', owner: { login: 'author' } } } };
+  const pr = { number: 1, state: 'open', draft: false, body: comment(metadata), user: { id: 1 }, base: { ref: 'main' }, head: { sha: 'abc123', repo: { name: 'fork', owner: { login: 'author' } } } };
   const data = {
-    comments: [{ id: 1, user: { id: 1 }, body: comment(metadata) }],
     reviews: [{ id: 1, user: { id: 2, login: 'reviewer', type: 'User' }, state: 'APPROVED', commit_id: 'abc123' }],
     permission: 'write', state: structuredClone(state), statuses: [], requests: [],
   };
   const github = {
     rest: {
-      issues: { listComments: 'comments' },
       pulls: { listReviews: 'reviews', list: 'pulls', get: async () => ({ data: pr }) },
       repos: {
         getContent: async request => { data.requests.push(request); return { data: { type: 'file', encoding: 'base64', content: Buffer.from(JSON.stringify(data.state)).toString('base64') } }; },
@@ -28,13 +26,13 @@ function fixture() {
   return { github, repo: { owner: 'org', repo: 'Nexo' }, pr, data };
 }
 
-test('parses the machine-readable feature contract', () => {
-  assert.deepEqual(parseFeatureComment(comment(metadata)), metadata);
+test('parses the machine-readable feature contract from the PR description', () => {
+  assert.deepEqual(parseFeatureDescription(comment(metadata)), metadata);
 });
 
 test('rejects missing, duplicate, malformed and unsafe metadata', () => {
   for (const body of ['', comment(metadata) + comment(metadata), comment({ ...metadata, feature_id: '../secret' }), comment({ ...metadata, feature_id: '<feature-id>' }), comment({ ...metadata, feature_id: ['1-initial-scaffolding'] }), comment({ ...metadata, required_review_state: 'pending' }), comment(metadata).replace('"schema_version":1', '"schema_version":')]) {
-    assert.throws(() => parseFeatureComment(body));
+    assert.throws(() => parseFeatureDescription(body));
   }
 });
 
@@ -50,15 +48,9 @@ test('reads the archived feature at the exact PR commit and accepts a real appro
   assert.deepEqual(f.data.requests[0], { owner: 'author', repo: 'fork', path: 'sdd/features/1-initial-scaffolding/state.json', ref: 'abc123' });
 });
 
-test('later comments cannot replace an invalid first author comment', async () => {
-  const f = fixture();
-  f.data.comments = [{ id: 5, user: { id: 1 }, body: comment(metadata) }, { id: 1, user: { id: 99 }, body: 'bot' }, { id: 2, user: { id: 1 }, body: 'missing metadata' }];
-  await assert.rejects(() => evaluate(f), /bloque sdd-feature/);
-});
-
-test('rejects an absent first author comment', async () => {
-  const f = fixture(); f.data.comments = [];
-  await assert.rejects(() => evaluate(f), /Falta el primer comentario/);
+test('rejects a missing PR description contract', async () => {
+  const f = fixture(); f.pr.body = '';
+  await assert.rejects(() => evaluate(f), /descripción de la PR/);
 });
 
 test('rejects stale, missing, self and unauthorized approvals', async () => {
@@ -115,7 +107,7 @@ test('API errors fail closed', async () => {
 
 test('a failing PR prevents another PR sharing its commit from publishing success', async () => {
   const f = fixture();
-  const second = { ...f.pr, number: 2 };
+  const second = { ...f.pr, number: 2, body: '' };
   const paginate = f.github.paginate;
   f.github.paginate = async (method, args) => {
     if (method === 'pulls') return [f.pr, second];

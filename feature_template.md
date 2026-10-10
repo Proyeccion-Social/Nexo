@@ -1,10 +1,10 @@
 <!--
-Uso: copiar esta plantilla como primer comentario de conversación de la PR,
-publicado por su autor. Reemplazar <feature-id> por el identificador completo
-de SDD (por ejemplo, 1-initial-scaffolding) y completar las secciones.
+Uso: copiar esta plantilla en la descripción de la PR. Reemplazar <feature-id>
+por el identificador completo de SDD (por ejemplo, 1-initial-scaffolding) y
+completar las secciones.
 
-Contrato para el futuro check obligatorio de CI:
-- Leer el primer comentario de conversación publicado por el autor de la PR.
+Contrato validado por el check obligatorio de CI:
+- Leer la descripción actual de la PR.
 - Exigir exactamente un bloque sdd-feature con JSON válido y schema_version 1.
 - Rechazar placeholders e identificadores que no cumplan
   ^[1-9][0-9]*-[a-z][a-z0-9]*(?:-[a-z0-9]+)*$.
@@ -14,10 +14,10 @@ Contrato para el futuro check obligatorio de CI:
 - Exigir feature_status archived y required_review_state APPROVED en el JSON.
 - Exigir al menos una revisión vigente APPROVED de GitHub de un revisor
   habilitado, distinto del autor. Una aprobación descartada o invalidada por
-  cambios posteriores no satisface el requisito. El comentario no otorga
-  aprobación; CI debe consultar las revisiones reales de la PR.
+  cambios posteriores no satisface el requisito. La descripción de la PR no
+  otorga aprobación; CI debe consultar las revisiones reales de la PR.
 - Fallar si falta información o no puede comprobarse alguna condición.
-- Reevaluar al cambiar comentarios, commits o revisiones. Configurar este check
+- Reevaluar al cambiar la descripción, los commits o las revisiones. Configurar este check
   como obligatorio y las aprobaciones en la protección de la rama destino.
 
 El workflow `.github/workflows/sdd-gate.yml` implementa este contrato. La

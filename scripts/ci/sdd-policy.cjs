@@ -4,11 +4,11 @@ const FEATURE_ID = /^[1-9][0-9]*-[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/;
 const STATUS_CONTEXT = 'SDD / Feature gate';
 const BRANCHES = new Set(['main', 'develop']);
 
-function parseFeatureComment(body) {
+function parseFeatureDescription(body) {
   const start = '<!-- sdd-feature:start -->';
   const end = '<!-- sdd-feature:end -->';
   if (typeof body !== 'string' || body.split(start).length !== 2 || body.split(end).length !== 2) {
-    throw new Error('El primer comentario debe contener exactamente un bloque sdd-feature.');
+    throw new Error('La descripción de la PR debe contener exactamente un bloque sdd-feature.');
   }
   const block = body.slice(body.indexOf(start) + start.length, body.indexOf(end)).trim();
   const match = /^```json\s*\n([\s\S]*?)\n```$/.exec(block);
@@ -46,12 +46,7 @@ function reviewDecisions(reviews) {
 
 async function evaluate({ github, repo, pr }) {
   if (pr.draft) throw new Error('La PR está en draft.');
-  const comments = await github.paginate(github.rest.issues.listComments, {
-    ...repo, issue_number: pr.number, per_page: 100,
-  });
-  const first = comments.filter(c => c.user?.id === pr.user.id).sort((a, b) => a.id - b.id)[0];
-  if (!first) throw new Error('Falta el primer comentario del autor con la plantilla de feature.');
-  const metadata = parseFeatureComment(first.body);
+  const metadata = parseFeatureDescription(pr.body);
   const { data: file } = await github.rest.repos.getContent({
     owner: pr.head.repo.owner.login,
     repo: pr.head.repo.name,
@@ -123,4 +118,4 @@ async function run({ github, context, core }) {
   if (results.some(r => !r.ok)) core.setFailed('Hay PRs que no cumplen el contrato SDD. Consulta el resumen.');
 }
 
-module.exports = { parseFeatureComment, assertArchivedFeature, reviewDecisions, evaluate, run };
+module.exports = { parseFeatureDescription, assertArchivedFeature, reviewDecisions, evaluate, run };
