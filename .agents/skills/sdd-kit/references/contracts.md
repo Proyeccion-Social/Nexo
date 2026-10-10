@@ -18,6 +18,7 @@ Campos obligatorios:
 | --- | --- |
 | schema_version | Entero 1 |
 | feature_id, slug, description | Strings; identidad estable y descripción del usuario |
+| git | En features nuevas: {branch, base_branch, base_sha, created_at}; branch = `feature/<feature_id>`, inmutable. Datos históricos pueden no tenerlo. |
 | number, revision | Enteros positivos; revision aumenta al escribir estado |
 | status | Uno de los siete estados definidos por SKILL.md |
 | created_at, updated_at | Timestamps |

@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "revision": 5,
+  "plan_revision": 1,
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Crear y registrar la rama de feature",
+      "description": "Actualizar el init para escoger la base permitida, crear feature/<feature_id> antes de escribir artefactos y guardar branch, base_branch, base_sha y created_at.",
+      "requirement_ids": [
+        "FR-001"
+      ],
+      "depends_on": [],
+      "acceptance_criteria": [
+        "La skill indica el nombre feature/<feature_id> y prefiere develop cuando existe.",
+        "La rama solo se crea desde una base confirmada y el state registra la referencia y SHA observados.",
+        "La regla aparece antes de la escritura de documentos o código en el flujo init."
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "type": "inspection",
+          "result": "pass",
+          "details": "Verified skill branch creation precedes artifact writes; current branch feature/2-sdd-branch-workflow, HEAD/base SHA 1361a5a78a38bbada2cae4faeaa318a812bbc349 agree with registered state."
+        }
+      ],
+      "history": [
+        {
+          "detail": "Existing branch workflow rules and state metadata inspected against FR-001.",
+          "at": "2026-10-10T22:22:58Z",
+          "event": "completed"
+        }
+      ]
+    },
+    {
+      "id": "T002",
+      "title": "Proteger el trabajo local y validar la rama registrada",
+      "description": "Documentar el bloqueo seguro ante cambios locales que se mezclarían y exigir la rama registrada en approve_functional, approve_technical, review, implement y archive.",
+      "requirement_ids": [
+        "FR-001",
+        "FR-002"
+      ],
+      "depends_on": [
+        "T001"
+      ],
+      "acceptance_criteria": [
+        "Los cambios tracked y untracked no se guardan con stash, stage ni se descartan para cambiar de rama.",
+        "Cada etapa posterior compara la rama actual con state.json antes de mutar.",
+        "La skill limita sus operaciones Git automáticas a crear la rama local y excluye commit, push y merge."
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "type": "inspection",
+          "details": "Verified dirty tracked/untracked work is preserved without stash/stage/discard; approve_*, review, implement and archive require the registered branch; no commit/push/merge is allowed.",
+          "result": "pass"
+        }
+      ],
+      "history": [
+        {
+          "detail": "Skill safeguards inspected against FR-001 and FR-002.",
+          "event": "completed",
+          "at": "2026-10-10T22:23:14Z"
+        }
+      ]
+    },
+    {
+      "id": "T003",
+      "title": "Documentar las rutas de merge en la plantilla de PR",
+      "description": "Indicar Squash and merge para feature/* hacia develop y release/* hacia main, mantener los requisitos de aprobación/checks y enlazar el workflow vigente en vez de docs/ci.md.",
+      "requirement_ids": [
+        "FR-003"
+      ],
+      "depends_on": [],
+      "acceptance_criteria": [
+        "La plantilla enumera ambos destinos y Squash and merge.",
+        "La plantilla mantiene el Approve de GitHub y los checks obligatorios.",
+        "La plantilla apunta a .github/workflows/sdd-gate.yml y no referencia docs/ci.md."
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "type": "inspection",
+          "workflow_path": ".github/workflows/sdd-gate.yml",
+          "details": "Template has both squash routes, retains required GitHub Approve/checks, links the PR gate workflow, and has no docs/ci.md reference.",
+          "result": "pass",
+          "path": "feature_template.md"
+        }
+      ],
+      "history": [
+        {
+          "detail": "PR merge instructions and workflow reference reconciled.",
+          "event": "completed",
+          "at": "2026-10-10T22:23:52Z"
+        }
+      ]
+    },
+    {
+      "id": "T004",
+      "title": "Verificar coherencia del flujo y sus documentos",
+      "description": "Revisar el resultado contra FR-001 a FR-003 y comprobar la validez de los artefactos OpenSpec y el diff documental.",
+      "requirement_ids": [
+        "FR-001",
+        "FR-002",
+        "FR-003"
+      ],
+      "depends_on": [
+        "T001",
+        "T002",
+        "T003"
+      ],
+      "acceptance_criteria": [
+        "openspec validate sdd-2-sdd-branch-workflow termina correctamente.",
+        "git diff --check no reporta errores de whitespace.",
+        "La revisión confirma cobertura de FR-001, FR-002 y FR-003, sin enlace roto a docs/ci.md ni creación automática de ramas base."
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "type": "verification",
+          "result": "pass",
+          "source_paths": [
+            ".agents/skills/sdd-kit/SKILL.md",
+            ".agents/skills/sdd-kit/references/contracts.md",
+            "feature_template.md",
+            ".github/workflows/sdd-gate.yml"
+          ],
+          "checks": {
+            "openspec_validate": "Change 'sdd-2-sdd-branch-workflow' is valid\r\nℹ [INFO] file: skip_specs is set in .openspec.yaml: change declares no spec-level behavior changes, zero deltas accepted",
+            "requirement_coverage": {
+              "FR001": true,
+              "FR002": true,
+              "FR003": true,
+              "NoAutoBase": true,
+              "GateExists": true
+            },
+            "git_diff_check": "warning: in the working copy of 'feature_template.md', LF will be replaced by CRLF the next time Git touches it",
+            "git_diff_sha256": "8f52649afca8c7919e43e05d7893cf828c113aaf1ab1874005ed3ae4f0b53dfc",
+            "git_head": "1361a5a78a38bbada2cae4faeaa318a812bbc349"
+          }
+        }
+      ],
+      "history": [
+        {
+          "event": "completed",
+          "detail": "Validación de OpenSpec, diff y cobertura FR-001..FR-003 completada.",
+          "at": "2026-10-10T22:24:24Z"
+        }
+      ]
+    }
+  ]
+}
