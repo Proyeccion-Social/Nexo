@@ -85,7 +85,7 @@ test('a different reviewer requesting changes blocks an approve', async () => {
 });
 
 function runner(f) {
-  return { ...f, context: { repo: f.repo, serverUrl: 'https://github.com', runId: 1 }, core: { summary: { addHeading() { return this; }, addTable() { return this; }, async write() {} }, setFailed(message) { f.data.failed = message; } } };
+  return { ...f, context: { repo: f.repo, serverUrl: 'https://github.com', runId: 1, payload: { pull_request: { number: f.pr.number } } }, core: { summary: { addHeading() { return this; }, addTable() { return this; }, async write() {} }, setFailed(message) { f.data.failed = message; } } };
 }
 
 test('publishes pending then success on PR head', async () => {
@@ -118,6 +118,20 @@ test('a failing PR prevents another PR sharing its commit from publishing succes
   await run(runner(f));
   assert.deepEqual(f.data.statuses.map(s => s.state), ['pending', 'failure']);
   assert.match(f.data.statuses.at(-1).description, /PR #2/);
+  assert.equal(f.data.failed, undefined, 'the job for PR #1 must not fail because PR #2 shares its commit');
+});
+
+test('an unrelated failing PR does not fail the triggered PR job', async () => {
+  const f = fixture();
+  const second = { ...f.pr, number: 2, body: '', head: { ...f.pr.head, sha: 'other-sha' } };
+  const paginate = f.github.paginate;
+  f.github.paginate = async (method, args) => method === 'pulls' ? [f.pr, second] : paginate(method, args);
+  f.github.rest.pulls.get = async args => ({ data: args.pull_number === 2 ? second : f.pr });
+  await run(runner(f));
+  assert.deepEqual(f.data.statuses.map(s => [s.sha, s.state]), [
+    ['abc123', 'pending'], ['other-sha', 'pending'], ['abc123', 'success'], ['other-sha', 'failure'],
+  ]);
+  assert.equal(f.data.failed, undefined);
 });
 
 test('a new commit during evaluation cannot publish a stale success', async () => {
