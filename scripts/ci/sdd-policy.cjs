@@ -115,7 +115,11 @@ async function run({ github, context, core }) {
     ...results.map(r => [`#${r.number}`, r.message]),
   ]);
   await core.summary.write();
-  if (results.some(r => !r.ok)) core.setFailed('Hay PRs que no cumplen el contrato SDD. Consulta el resumen.');
+  const triggeredPrNumber = context.payload?.pull_request?.number;
+  const triggeredPr = results.find(r => r.number === triggeredPrNumber);
+  if (triggeredPr && !triggeredPr.ok) {
+    core.setFailed(`PR #${triggeredPr.number} no cumple el contrato SDD: ${triggeredPr.message}`);
+  }
 }
 
 module.exports = { parseFeatureDescription, assertArchivedFeature, reviewDecisions, evaluate, run };
