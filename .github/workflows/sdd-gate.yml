@@ -4,8 +4,6 @@ on:
   pull_request_target:
     branches: [main, develop]
     types: [opened, reopened, synchronize, edited, ready_for_review, converted_to_draft, closed]
-  issue_comment:
-    types: [created, edited, deleted]
   workflow_run:
     workflows: [PR review signal]
     types: [completed]
@@ -25,7 +23,6 @@ concurrency:
 
 jobs:
   gate:
-    if: github.event_name != 'issue_comment' || github.event.issue.pull_request
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
