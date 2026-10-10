@@ -1,0 +1,335 @@
+{
+  "schema_version": 1,
+  "revision": 13,
+  "plan_revision": 1,
+  "plan_id": "f6b2018c-3b01-487f-8f67-db39696012a6",
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Fijar herramientas, dependencias y lockfile",
+      "description": "Crear package.json con ESM, engines Node >=24.15.0 <25, packageManager pnpm@11.25.0, scripts aprobados y versiones estables exactas de NestJS 12, TypeScript 6 y sus dependencias compatibles. Resolver peers y generar pnpm-lock.yaml sin instalar herramientas globales.",
+      "requirement_ids": [
+        "R001",
+        "R002"
+      ],
+      "depends_on": [],
+      "acceptance_criteria": [
+        "Los paquetes Nest de ejecución y CLI local pertenecen a la línea 12, TypeScript a la 6 y @types/node a una línea compatible con Node 24; versiones exactas y sin prereleases.",
+        "La instalación de dependencias finaliza sin errores ni peers incompatibles; package.json y pnpm-lock.yaml coinciden.",
+        "Los scripts start, start:dev, build, start:prod y test:e2e son portables y no contienen rutas personales del runtime. Si la línea aprobada no está publicada o es incompatible, detenerse y solicitar review."
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "check": "pnpm install --strict-peer-dependencies",
+          "result": "passed",
+          "details": "182 paquetes instalados; Nest 12.1.2, CLI 12.0.8, TypeScript 6.0.3; lockfile generado, sin errores de peers.",
+          "at": "2026-10-10T21:03:01.111Z"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-10T21:01:21.928Z",
+          "from": "pending",
+          "to": "in_progress",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        },
+        {
+          "at": "2026-10-10T21:03:01.111Z",
+          "from": "in_progress",
+          "to": "done",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        }
+      ],
+      "openspec": {
+        "slot": "1.1",
+        "group": "1. Base ejecutable"
+      }
+    },
+    {
+      "id": "T002",
+      "title": "Crear configuración y runtime NestJS",
+      "description": "Crear configuración Nest/TypeScript NodeNext strict y .gitignore; implementar AppModule, fábrica en src/app.ts y bootstrap en src/main.ts. Importar reflect-metadata, validar PORT, usar 3000 por defecto y gestionar errores y cierre de recursos según D003 y D005.",
+      "requirement_ids": [
+        "R001",
+        "R002"
+      ],
+      "depends_on": [
+        "T001"
+      ],
+      "acceptance_criteria": [
+        "pnpm run build genera dist/main.js sin errores, con metadata de decoradores y extensiones ESM correctas.",
+        "Importar la fábrica compilada no abre un listener; el arranque real inicia un servidor HTTP en el puerto configurado.",
+        "PORT inválido provoca mensaje claro y salida no cero; errores de escucha cierran recursos abiertos y no se ocultan.",
+        ".agents, openspec y sdd permanecen intactos y fuera del build; node_modules, dist, temporales y logs quedan ignorados."
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "check": "pnpm run build",
+          "result": "passed",
+          "details": "Compilación ESM NodeNext; dist/main.js generado.",
+          "at": "2026-10-10T21:04:05.920Z"
+        },
+        {
+          "check": "Runtime smoke",
+          "result": "passed",
+          "details": "Fábrica sin listener al importarse; HTTP real en puerto dinámico; cierre comprobado.",
+          "at": "2026-10-10T21:04:05.920Z"
+        },
+        {
+          "check": "Invalid PORT bootstrap",
+          "result": "passed",
+          "details": "PORT=invalid termina con código 1 y mensaje explícito.",
+          "at": "2026-10-10T21:04:05.920Z"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-10T21:03:05.782Z",
+          "from": "pending",
+          "to": "in_progress",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        },
+        {
+          "at": "2026-10-10T21:04:05.920Z",
+          "from": "in_progress",
+          "to": "done",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        }
+      ],
+      "openspec": {
+        "slot": "1.2",
+        "group": "1. Base ejecutable"
+      }
+    },
+    {
+      "id": "T003",
+      "title": "Comprobar y documentar el runtime local",
+      "description": "Crear la base de test/ping.e2e.test.mjs con node:test, assert y comprobaciones de arranque/configuración; documentar prerrequisitos, instalación, scripts y PORT en README. Usar la fábrica compilada, puerto dinámico y cierre garantizado para las pruebas de servidor.",
+      "requirement_ids": [
+        "R001",
+        "R002"
+      ],
+      "depends_on": [
+        "T002"
+      ],
+      "acceptance_criteria": [
+        "Las comprobaciones de runtime usan la configuración real, verifican escucha HTTP y cierran la aplicación incluso ante fallos; no añaden un runner externo.",
+        "Se comprueba el rechazo de PORT inválido mediante el arranque compilado, sin dejar procesos activos.",
+        "README documenta Node y pnpm aprobados, instalación, start/start:dev/build/start:prod y configuración de PORT con ejemplos PowerShell/POSIX aplicables.",
+        "El comando test:e2e compila y ejecuta los tests ESM mediante node --test."
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "check": "pnpm run test:e2e",
+          "result": "passed",
+          "details": "3 tests: servidor HTTP real, PORT inválido y puerto ocupado; 0 fallos, procesos cerrados.",
+          "at": "2026-10-10T21:05:48.459Z"
+        },
+        {
+          "check": "README runtime review",
+          "result": "passed",
+          "details": "Prerrequisitos, lockfile, desarrollo, build, producción y PORT documentados con sintaxis PowerShell/POSIX.",
+          "at": "2026-10-10T21:05:48.459Z"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-10T21:04:10.623Z",
+          "from": "pending",
+          "to": "in_progress",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        },
+        {
+          "at": "2026-10-10T21:05:48.459Z",
+          "from": "in_progress",
+          "to": "done",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        }
+      ],
+      "openspec": {
+        "slot": "1.3",
+        "group": "1. Base ejecutable"
+      }
+    },
+    {
+      "id": "T004",
+      "title": "Implementar health y comprobar el contrato HTTP",
+      "description": "Implementar HealthModule y HealthController, importarlos desde AppModule y exponer GET /ping con retorno pong, estado 200 y Content-Type text/plain; charset=utf-8 mediante decoradores estándar. Extender test/ping.e2e.test.mjs con escenarios HTTP R003-R005.",
+      "requirement_ids": [
+        "R003",
+        "R004",
+        "R005"
+      ],
+      "depends_on": [
+        "T002",
+        "T003"
+      ],
+      "acceptance_criteria": [
+        "Petición GET /ping sin credenciales devuelve 200 y exactamente los bytes [112,111,110,103], sin envoltura JSON ni salto de línea.",
+        "Content-Type tiene media type text/plain y sigue siendo text/plain con el mismo cuerpo ante Accept: application/json.",
+        "La ruta es /ping sin prefijo global y responde sin configurar ni consultar servicios externos.",
+        "Las pruebas HTTP pasan con el servidor real de la fábrica compartida, puerto dinámico y cierre garantizado. No se sustituyen por comprobar solo el retorno del controlador."
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "check": "pnpm run test:e2e",
+          "result": "passed",
+          "details": "5 tests, 0 fallos: GET /ping 200, bytes 112/111/110/103 y media type text/plain también con Accept JSON; runtime y errores de arranque.",
+          "at": "2026-10-10T21:06:42.849Z"
+        },
+        {
+          "check": "Liveness dependency inspection",
+          "result": "passed",
+          "details": "HealthController retorna una constante y solo importa decoradores Nest; no requiere autenticación, prefijo global ni servicios externos.",
+          "at": "2026-10-10T21:06:42.849Z"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-10T21:05:52.949Z",
+          "from": "pending",
+          "to": "in_progress",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        },
+        {
+          "at": "2026-10-10T21:06:42.849Z",
+          "from": "in_progress",
+          "to": "done",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        }
+      ],
+      "openspec": {
+        "slot": "2.1",
+        "group": "2. Endpoint ping"
+      }
+    },
+    {
+      "id": "T005",
+      "title": "Documentar y comprobar el uso de ping",
+      "description": "Completar README con la llamada a /ping, resultado esperado y significado de liveness. Incluir ejemplos usables en PowerShell y POSIX y comprobarlos contra la aplicación.",
+      "requirement_ids": [
+        "R002",
+        "R003",
+        "R004",
+        "R005"
+      ],
+      "depends_on": [
+        "T003",
+        "T004"
+      ],
+      "acceptance_criteria": [
+        "README documenta GET /ping, status 200, cuerpo exacto pong, Content-Type text/plain y ausencia de comprobaciones externas.",
+        "Los ejemplos HTTP y de configuración de puerto son consistentes con los scripts y el comportamiento real; los ejemplos aplicables al entorno se ejecutan con éxito.",
+        "La documentación diferencia arranque de desarrollo y arranque compilado e identifica build como prerrequisito de start:prod."
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "check": "README HTTP examples",
+          "result": "passed",
+          "details": "curl.exe -i e Invoke-WebRequest contra servidor real: 200, text/plain; charset=utf-8, cuerpo exacto pong; servidor cerrado.",
+          "at": "2026-10-10T21:08:10.642Z"
+        },
+        {
+          "check": "README contract review",
+          "result": "passed",
+          "details": "Scripts, prerrequisitos, PORT PowerShell/POSIX, build antes de producción, liveness y Accept JSON documentados.",
+          "at": "2026-10-10T21:08:10.642Z"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-10T21:06:47.111Z",
+          "from": "pending",
+          "to": "in_progress",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        },
+        {
+          "at": "2026-10-10T21:08:10.642Z",
+          "from": "in_progress",
+          "to": "done",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        }
+      ],
+      "openspec": {
+        "slot": "2.2",
+        "group": "2. Endpoint ping"
+      }
+    },
+    {
+      "id": "T006",
+      "title": "Verificar reproducibilidad y cobertura completa",
+      "description": "Realizar las comprobaciones integradas del lockfile, build, pruebas HTTP y arranques de desarrollo y producción. Registrar evidencia por requisito y por tarea, reconciliar el progreso JSON/OpenSpec y cerrar todos los procesos de comprobación.",
+      "requirement_ids": [
+        "R001",
+        "R002",
+        "R003",
+        "R004",
+        "R005"
+      ],
+      "depends_on": [
+        "T001",
+        "T002",
+        "T003",
+        "T004",
+        "T005"
+      ],
+      "acceptance_criteria": [
+        "La instalación frozen-lockfile y pnpm run build finalizan sin cambios inesperados en el lockfile; las pruebas E2E pasan.",
+        "start:dev y start:prod se comprueban por separado; GET /ping devuelve los headers, bytes y estado aprobados en ambos arranques.",
+        "Los tests y la inspección acreditan R001-R005, incluido Accept: application/json y funcionamiento sin servicios externos; no quedan comprobaciones obligatorias omitidas o bloqueadas.",
+        "Cada tarea done tiene evidencia vigente y equivalente a su checkbox OpenSpec; las aprobaciones y hashes siguen vigentes.",
+        "Todos los procesos de comprobación se cierran; validar artefactos OpenSpec no se usa como sustituto de evidencia del código. Archivar queda fuera de esta tarea."
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "check": "Frozen dependency installation",
+          "result": "passed",
+          "details": "pnpm install --frozen-lockfile --offline --strict-peer-dependencies; SHA-256 del lockfile permaneció igual.",
+          "at": "2026-10-10T21:09:28.451Z"
+        },
+        {
+          "check": "Build and E2E",
+          "result": "passed",
+          "details": "Build final exitoso; suite E2E de la misma implementación: 5 tests, 0 fallos, 0 omitidos.",
+          "at": "2026-10-10T21:09:28.451Z"
+        },
+        {
+          "check": "Development and compiled startup",
+          "result": "passed",
+          "details": "start:dev y start:prod comprobados por separado en puertos 54284 y 54263; GET /ping 200, text/plain y bytes pong, también con Accept JSON; todos sus procesos cerrados.",
+          "at": "2026-10-10T21:09:28.451Z"
+        },
+        {
+          "check": "Requirements and artifact validation",
+          "result": "passed",
+          "details": "R001-R005 cubiertos; controlador sin servicios externos; comandos README comprobados; OpenSpec --strict sin issues; node_modules, dist y caché pnpm ignorados.",
+          "at": "2026-10-10T21:09:28.451Z"
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-10T21:08:14.946Z",
+          "from": "pending",
+          "to": "in_progress",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        },
+        {
+          "at": "2026-10-10T21:09:28.451Z",
+          "from": "in_progress",
+          "to": "done",
+          "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+        }
+      ],
+      "openspec": {
+        "slot": "3.1",
+        "group": "3. Integración y evidencia"
+      }
+    }
+  ]
+}

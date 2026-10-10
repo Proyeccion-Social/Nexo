@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "operation_id": "576089d3-de56-44bf-be82-be6779832117",
+  "feature_id": "1-initial-scaffolding",
+  "started_at": "2026-10-10T21:31:30.122Z",
+  "source": "sdd/wip/1-initial-scaffolding",
+  "destination": "sdd/features/1-initial-scaffolding",
+  "openspec_source": "openspec/changes/sdd-1-initial-scaffolding",
+  "openspec_destination": "openspec/changes/archive/2026-10-10-sdd-1-initial-scaffolding",
+  "backups": [
+    {
+      "path": "sdd/specs/functional/global_functional.md",
+      "existed": false,
+      "sha256": null
+    },
+    {
+      "path": "sdd/specs/technical/global_technical.md",
+      "existed": false,
+      "sha256": null
+    },
+    {
+      "path": "openspec/specs/application-runtime/spec.md",
+      "existed": false,
+      "sha256": null
+    },
+    {
+      "path": "openspec/specs/health-check/spec.md",
+      "existed": false,
+      "sha256": null
+    }
+  ],
+  "phase": "complete",
+  "receipts": [
+    {
+      "action": "write_main_spec",
+      "path": "openspec/specs/application-runtime/spec.md",
+      "result": "created_or_verified",
+      "output_sha256": "fdc936558c2eb8202ebb4b90d936322c169eedfb876e6e1344247c822b526c26",
+      "at": "2026-10-10T21:31:47.266Z"
+    },
+    {
+      "action": "write_main_spec",
+      "path": "openspec/specs/health-check/spec.md",
+      "result": "created_or_verified",
+      "output_sha256": "0a07b97f0281ed9f1fc2423d4b5362fb3e4822621623ed2a333f20aaf425fb2e",
+      "at": "2026-10-10T21:31:47.293Z"
+    },
+    {
+      "action": "write_main_spec",
+      "path": "sdd/specs/functional/global_functional.md",
+      "result": "created_or_verified",
+      "output_sha256": "97dd0309573b2cd0830dace388a54335abce100b6b5146931d7b723b0462c67f",
+      "at": "2026-10-10T21:31:47.299Z"
+    },
+    {
+      "action": "write_main_spec",
+      "path": "sdd/specs/technical/global_technical.md",
+      "result": "created_or_verified",
+      "output_sha256": "9cd7ebce45ffb717b47059feb5c5887e1634dcb6804d12449662f437aa8bfb0a",
+      "at": "2026-10-10T21:31:47.347Z"
+    },
+    {
+      "action": "validate_main_specs",
+      "result": "passed",
+      "items": [
+        "application-runtime",
+        "health-check"
+      ],
+      "strict": true,
+      "at": "2026-10-10T21:32:10.959Z"
+    },
+    {
+      "action": "move_openspec_change",
+      "source": "openspec/changes/sdd-1-initial-scaffolding",
+      "destination": "openspec/changes/archive/2026-10-10-sdd-1-initial-scaffolding",
+      "result": "moved",
+      "at": "2026-10-10T21:32:10.987Z"
+    },
+    {
+      "action": "complete_archive",
+      "result": "verified",
+      "at": "2026-10-10T21:32:11.046Z"
+    }
+  ],
+  "completed_at": "2026-10-10T21:32:11.046Z"
+}

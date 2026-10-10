@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "plan_id": "f6b2018c-3b01-487f-8f67-db39696012a6",
+  "revision": 1,
+  "created_at": "2026-10-10T20:57:07.045Z",
+  "input_hashes": {
+    "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+    "technical": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8"
+  },
+  "tasks_revision": 13,
+  "status": "complete",
+  "conversation_ref": null,
+  "planning_mode": "conversational"
+}

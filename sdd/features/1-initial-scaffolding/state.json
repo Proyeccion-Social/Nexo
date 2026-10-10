@@ -1,0 +1,599 @@
+{
+  "schema_version": 1,
+  "feature_id": "1-initial-scaffolding",
+  "slug": "initial-scaffolding",
+  "description": "Crea la initial scaffolding para un proyecto en NestJS, con un endpoint de health que sea /ping y responda pong en texto plano",
+  "number": 1,
+  "revision": 35,
+  "status": "archived",
+  "created_at": "2026-10-10T20:46:07.552Z",
+  "updated_at": "2026-10-10T21:32:11.039Z",
+  "openspec": {
+    "root": "D:\\Dev\\Nexo",
+    "change_name": "sdd-1-initial-scaffolding",
+    "schema_name": "spec-driven",
+    "change_root": "D:\\Dev\\Nexo\\openspec\\changes\\archive\\2026-10-10-sdd-1-initial-scaffolding",
+    "archive_path": "D:\\Dev\\Nexo\\openspec\\changes\\archive\\2026-10-10-sdd-1-initial-scaffolding"
+  },
+  "artifacts": {
+    "functional": {
+      "path": "functional/functional.md",
+      "path_scope": "feature",
+      "revision": 1,
+      "sha256": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+      "inputs": {
+        "description": "11ef7a6a89e3768b0e148631736f825c12a34233d61aa1987d565aa62e85f434"
+      },
+      "valid": true,
+      "requirement_ids": [
+        "R001",
+        "R002",
+        "R003",
+        "R004",
+        "R005"
+      ]
+    },
+    "proposal": {
+      "path": "openspec/changes/archive/2026-10-10-sdd-1-initial-scaffolding/proposal.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "ac8eda7442ee0b1e430f1048b5ff086b9d3829cd4899aa49da941eb0619f058e",
+      "inputs": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5"
+      },
+      "valid": true,
+      "source_section": "Propuesta OpenSpec"
+    },
+    "specs.application-runtime": {
+      "path": "openspec/changes/archive/2026-10-10-sdd-1-initial-scaffolding/specs/application-runtime/spec.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "a8af291fe098002b7f01cf77c10cba85416b05db82852107133a7d0f4596a6df",
+      "inputs": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5"
+      },
+      "valid": true,
+      "source_section": "application-runtime"
+    },
+    "specs.health-check": {
+      "path": "openspec/changes/archive/2026-10-10-sdd-1-initial-scaffolding/specs/health-check/spec.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "ab994d0d06c75b0c3924cddf18ab3eb87675a8060379ac7659a8ad8d65b9d4b2",
+      "inputs": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5"
+      },
+      "valid": true,
+      "source_section": "health-check"
+    },
+    "technical": {
+      "path": "technical/technical.md",
+      "path_scope": "feature",
+      "revision": 1,
+      "sha256": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8",
+      "inputs": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+        "global_technical": null
+      },
+      "valid": true,
+      "decision_ids": [
+        "D001",
+        "D002",
+        "D003",
+        "D004",
+        "D005",
+        "D006",
+        "D007"
+      ]
+    },
+    "design": {
+      "path": "openspec/changes/archive/2026-10-10-sdd-1-initial-scaffolding/design.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8",
+      "inputs": {
+        "technical": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8"
+      },
+      "valid": true,
+      "source_section": "entire_technical_document"
+    },
+    "plan_metadata": {
+      "path": "plan/metadata.json",
+      "path_scope": "feature",
+      "revision": 13,
+      "sha256": "35c7e357bd85b8da388d84a677ed791b62f534991e2a1250255f9a22e67cf101",
+      "inputs": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+        "technical": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8",
+        "plan_revision": 1
+      },
+      "valid": true
+    },
+    "tasks": {
+      "path": "tasks/tasks.json",
+      "path_scope": "feature",
+      "revision": 13,
+      "sha256": "8b779852c5365a81fe56c9f6df0773219b40ee911ddf8d620e86626054b7efdb",
+      "inputs": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+        "technical": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8",
+        "plan_revision": 1
+      },
+      "valid": true
+    },
+    "tasks_projection": {
+      "path": "openspec/changes/archive/2026-10-10-sdd-1-initial-scaffolding/tasks.md",
+      "path_scope": "project",
+      "revision": 13,
+      "sha256": "68fa2b53c0c868d6d8ead0980c86739acf326c5d2d76533de4b947161ca5e45f",
+      "inputs": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+        "technical": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8",
+        "plan_revision": 1,
+        "tasks": "8b779852c5365a81fe56c9f6df0773219b40ee911ddf8d620e86626054b7efdb"
+      },
+      "valid": true
+    },
+    "global_functional": {
+      "path": "sdd/specs/functional/global_functional.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "97dd0309573b2cd0830dace388a54335abce100b6b5146931d7b723b0462c67f",
+      "inputs": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+        "technical": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8"
+      },
+      "valid": true
+    },
+    "global_technical": {
+      "path": "sdd/specs/technical/global_technical.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "9cd7ebce45ffb717b47059feb5c5887e1634dcb6804d12449662f437aa8bfb0a",
+      "inputs": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+        "technical": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8"
+      },
+      "valid": true
+    }
+  },
+  "approvals": {
+    "functional": {
+      "artifact_sha256": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+      "approved_at": "2026-10-10T20:52:22.266Z",
+      "source": {
+        "command": "sdd_kit.approve_functional 1-initial-scaffolding",
+        "actor": "user"
+      }
+    },
+    "technical": {
+      "artifact_sha256": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8",
+      "approved_at": "2026-10-10T20:56:10.812Z",
+      "source": {
+        "command": "sdd_kit.approve_technical 1-initial-scaffolding",
+        "actor": "user"
+      }
+    }
+  },
+  "operation": {
+    "id": "576089d3-de56-44bf-be82-be6779832117",
+    "command": "archive",
+    "phase": "complete",
+    "started_at": "2026-10-10T21:31:30.122Z",
+    "input_hashes": {
+      "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+      "technical": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8",
+      "tasks": "8b779852c5365a81fe56c9f6df0773219b40ee911ddf8d620e86626054b7efdb",
+      "code_sha256": null
+    },
+    "receipts": [
+      {
+        "action": "prepare",
+        "result": "passed",
+        "lock": "sdd/.write.lock",
+        "backup_manifest": "archive-recovery.json",
+        "backups": [
+          {
+            "path": "sdd/specs/functional/global_functional.md",
+            "existed": false,
+            "sha256": null
+          },
+          {
+            "path": "sdd/specs/technical/global_technical.md",
+            "existed": false,
+            "sha256": null
+          },
+          {
+            "path": "openspec/specs/application-runtime/spec.md",
+            "existed": false,
+            "sha256": null
+          },
+          {
+            "path": "openspec/specs/health-check/spec.md",
+            "existed": false,
+            "sha256": null
+          }
+        ],
+        "at": "2026-10-10T21:31:30.129Z"
+      },
+      {
+        "action": "write_main_spec",
+        "path": "openspec/specs/application-runtime/spec.md",
+        "result": "created_or_verified",
+        "output_sha256": "fdc936558c2eb8202ebb4b90d936322c169eedfb876e6e1344247c822b526c26",
+        "at": "2026-10-10T21:31:47.266Z"
+      },
+      {
+        "action": "write_main_spec",
+        "path": "openspec/specs/health-check/spec.md",
+        "result": "created_or_verified",
+        "output_sha256": "0a07b97f0281ed9f1fc2423d4b5362fb3e4822621623ed2a333f20aaf425fb2e",
+        "at": "2026-10-10T21:31:47.293Z"
+      },
+      {
+        "action": "write_main_spec",
+        "path": "sdd/specs/functional/global_functional.md",
+        "result": "created_or_verified",
+        "output_sha256": "97dd0309573b2cd0830dace388a54335abce100b6b5146931d7b723b0462c67f",
+        "at": "2026-10-10T21:31:47.299Z"
+      },
+      {
+        "action": "write_main_spec",
+        "path": "sdd/specs/technical/global_technical.md",
+        "result": "created_or_verified",
+        "output_sha256": "9cd7ebce45ffb717b47059feb5c5887e1634dcb6804d12449662f437aa8bfb0a",
+        "at": "2026-10-10T21:31:47.347Z"
+      },
+      {
+        "action": "validate_main_specs",
+        "result": "passed",
+        "items": [
+          "application-runtime",
+          "health-check"
+        ],
+        "strict": true,
+        "at": "2026-10-10T21:32:10.959Z"
+      },
+      {
+        "action": "move_openspec_change",
+        "source": "openspec/changes/sdd-1-initial-scaffolding",
+        "destination": "openspec/changes/archive/2026-10-10-sdd-1-initial-scaffolding",
+        "result": "moved",
+        "at": "2026-10-10T21:32:10.987Z"
+      },
+      {
+        "action": "move_sdd_feature",
+        "source": "sdd/wip/1-initial-scaffolding",
+        "destination": "sdd/features/1-initial-scaffolding",
+        "result": "moved",
+        "at": "2026-10-10T21:32:11.039Z"
+      }
+    ],
+    "error": null,
+    "completed_at": "2026-10-10T21:32:11.039Z"
+  },
+  "verification": {
+    "status": "pass",
+    "inputs": {
+      "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+      "technical": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8",
+      "tasks": "8b779852c5365a81fe56c9f6df0773219b40ee911ddf8d620e86626054b7efdb",
+      "code": "c5372d94a6ee58db5d024a2a4aa3cc0fb400d0c07faa2ce3aa0fcc4ee1a3215e"
+    },
+    "code_files": {
+      "package.json": "f6f6e9502b5cda59e8d9ec3ecb9ba3bb66e7e36cf4d363caeede0eaddb528cf3",
+      "pnpm-lock.yaml": "753f4424a1c1c22cafb3bbd2d47ac5dd3364fa207742d96e59e800d766297d3f",
+      "nest-cli.json": "fda1e686527cc24d82c47902cf094d07a6410eae9662b8582abc29533ba9f3d5",
+      "tsconfig.json": "0a7dcb7ad44f5393463986d62bdbf164a095486effe9b0f0be23de220d756e53",
+      "tsconfig.build.json": "da534cfc40bee893b86e67c6da29a4773134d840af011d377bc81ac2405c9376",
+      ".gitignore": "35c0a64ac7485676c0848e1da04bb6471693d44824fc347029a82c319ff450bf",
+      "README.md": "5e97274045e1e36f1533eb7b6ad40bd38471037eb47a7bbf730c6ebae3e8e0da",
+      "src/main.ts": "e219aeb63b53be7cb1167a0253da5f0262b7d1df83a2c0cd611b62fd6e2a9aa9",
+      "src/app.ts": "55750b62fbea57be5ec46f9791b66719c91d7b71a793668fcf81a03b0569da7b",
+      "src/app.module.ts": "cd11a7fecbb77b05029929df67d96e2c084ed8dc9fbf74a51e1c5cb874f745de",
+      "src/health/health.module.ts": "82c097b438ffac4d7943986fdd8eb3cf61a60e77d3b29b4b871f335802ea9f72",
+      "src/health/health.controller.ts": "e5c19245db782197263c0d1da8e6059a599586515231f64117ee9aca8026320d",
+      "test/ping.e2e.test.mjs": "cdc45e60e5cfcc32f4a4002ad94d2950db02014d2f416a9781613baa0bf9b5d9"
+    },
+    "evidence": [
+      {
+        "requirement_ids": [
+          "R001",
+          "R002"
+        ],
+        "checks": [
+          "Frozen installation and unchanged lockfile",
+          "Build",
+          "Development and production HTTP startup",
+          "README commands"
+        ],
+        "result": "passed",
+        "at": "2026-10-10T21:10:05.771Z"
+      },
+      {
+        "requirement_ids": [
+          "R003",
+          "R004",
+          "R005"
+        ],
+        "checks": [
+          "Five E2E tests with no failures or skips",
+          "HTTP 200 and exact pong bytes",
+          "text/plain also with Accept JSON",
+          "No external health dependencies",
+          "All smoke servers and processes closed"
+        ],
+        "result": "passed",
+        "at": "2026-10-10T21:10:05.771Z"
+      }
+    ]
+  },
+  "history": [
+    {
+      "at": "2026-10-10T20:46:07.552Z",
+      "event": "feature_created",
+      "status": "drafting_functional"
+    },
+    {
+      "at": "2026-10-10T20:48:41.412Z",
+      "event": "functional_ready",
+      "from": "drafting_functional",
+      "to": "pending_functional_review"
+    },
+    {
+      "at": "2026-10-10T20:52:22.266Z",
+      "event": "functional_approved",
+      "operation_id": "787fcfbb-2a53-4d0c-9ef5-4dc57820f976",
+      "artifact_sha256": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5"
+    },
+    {
+      "at": "2026-10-10T20:54:03.239Z",
+      "event": "technical_ready",
+      "from": "pending_functional_review",
+      "to": "pending_technical_review",
+      "operation_id": "787fcfbb-2a53-4d0c-9ef5-4dc57820f976"
+    },
+    {
+      "at": "2026-10-10T20:56:10.812Z",
+      "event": "technical_approved",
+      "operation_id": "fdc7c03f-db30-45a5-adee-95218d30af80",
+      "artifact_sha256": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8"
+    },
+    {
+      "at": "2026-10-10T20:57:44.642Z",
+      "event": "tasks_ready",
+      "from": "pending_technical_review",
+      "to": "ready_for_implementation",
+      "operation_id": "fdc7c03f-db30-45a5-adee-95218d30af80"
+    },
+    {
+      "at": "2026-10-10T21:01:10.676Z",
+      "event": "implementation_started",
+      "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374",
+      "from": "ready_for_implementation",
+      "to": "implementing"
+    },
+    {
+      "at": "2026-10-10T21:10:05.771Z",
+      "event": "implementation_verified",
+      "from": "implementing",
+      "to": "merging_specs",
+      "operation_id": "b1fc532e-8beb-40dc-b62d-392796d6a374"
+    },
+    {
+      "at": "2026-10-10T21:31:30.123Z",
+      "event": "archive_started",
+      "operation_id": "576089d3-de56-44bf-be82-be6779832117",
+      "from": "merging_specs"
+    },
+    {
+      "at": "2026-10-10T21:32:11.039Z",
+      "event": "feature_archived",
+      "from": "merging_specs",
+      "to": "archived",
+      "operation_id": "576089d3-de56-44bf-be82-be6779832117"
+    }
+  ],
+  "completed_operations": [
+    {
+      "id": "13a51034-fd87-4ef3-8e8e-dd2ced27cfef",
+      "command": "init",
+      "phase": "complete",
+      "started_at": "2026-10-10T20:46:07.552Z",
+      "input_hashes": {
+        "description": "11ef7a6a89e3768b0e148631736f825c12a34233d61aa1987d565aa62e85f434"
+      },
+      "receipts": [
+        {
+          "action": "reserve_identity",
+          "path": "D:\\Dev\\Nexo\\sdd\\wip\\1-initial-scaffolding",
+          "result": "created",
+          "at": "2026-10-10T20:46:07.552Z"
+        },
+        {
+          "action": "openspec_scaffold",
+          "path": "D:\\Dev\\Nexo\\openspec\\changes\\sdd-1-initial-scaffolding",
+          "result": "metadata_present",
+          "output_sha256": "e61703315c59969805e021ec521ca189369aaf8ea902d52c5e39c7fbc603598f",
+          "at": "2026-10-10T20:46:54.710Z"
+        },
+        {
+          "action": "write_proposal",
+          "path": "D:\\Dev\\Nexo\\openspec\\changes\\sdd-1-initial-scaffolding\\proposal.md",
+          "result": "created",
+          "output_sha256": "ac8eda7442ee0b1e430f1048b5ff086b9d3829cd4899aa49da941eb0619f058e",
+          "at": "2026-10-10T20:46:54.710Z"
+        },
+        {
+          "action": "write_delta_spec",
+          "capability": "application-runtime",
+          "path": "D:\\Dev\\Nexo\\openspec\\changes\\sdd-1-initial-scaffolding\\specs\\application-runtime\\spec.md",
+          "result": "created",
+          "output_sha256": "a8af291fe098002b7f01cf77c10cba85416b05db82852107133a7d0f4596a6df",
+          "at": "2026-10-10T20:47:18.351Z"
+        },
+        {
+          "action": "write_delta_spec",
+          "capability": "health-check",
+          "path": "D:\\Dev\\Nexo\\openspec\\changes\\sdd-1-initial-scaffolding\\specs\\health-check\\spec.md",
+          "result": "created",
+          "output_sha256": "ab994d0d06c75b0c3924cddf18ab3eb87675a8060379ac7659a8ad8d65b9d4b2",
+          "at": "2026-10-10T20:47:36.815Z"
+        },
+        {
+          "action": "write_functional",
+          "path": "D:\\Dev\\Nexo\\sdd\\wip\\1-initial-scaffolding\\functional\\functional.md",
+          "result": "created",
+          "output_sha256": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+          "at": "2026-10-10T20:48:13.889Z"
+        },
+        {
+          "action": "validate_functional_and_projections",
+          "result": "passed",
+          "requirement_ids": [
+            "R001",
+            "R002",
+            "R003",
+            "R004",
+            "R005"
+          ],
+          "at": "2026-10-10T20:48:41.412Z"
+        },
+        {
+          "action": "openspec_validate",
+          "command": "openspec validate sdd-1-initial-scaffolding --strict --json --no-interactive",
+          "result": "passed",
+          "issues": [],
+          "at": "2026-10-10T20:48:41.412Z"
+        }
+      ],
+      "error": null,
+      "completed_at": "2026-10-10T20:48:41.412Z"
+    },
+    {
+      "id": "787fcfbb-2a53-4d0c-9ef5-4dc57820f976",
+      "command": "approve_functional",
+      "phase": "complete",
+      "started_at": "2026-10-10T20:52:22.266Z",
+      "input_hashes": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+        "global_technical": null
+      },
+      "receipts": [
+        {
+          "action": "approve_functional",
+          "artifact_sha256": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+          "result": "approved",
+          "at": "2026-10-10T20:52:22.266Z"
+        },
+        {
+          "action": "write_technical_and_projection",
+          "paths": [
+            "D:\\Dev\\Nexo\\sdd\\wip\\1-initial-scaffolding\\technical\\technical.md",
+            "D:\\Dev\\Nexo\\openspec\\changes\\sdd-1-initial-scaffolding\\design.md"
+          ],
+          "result": "created",
+          "output_sha256": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8",
+          "at": "2026-10-10T20:53:39.049Z"
+        },
+        {
+          "action": "validate_technical_and_projection",
+          "result": "passed",
+          "requirement_ids": [
+            "R001",
+            "R002",
+            "R003",
+            "R004",
+            "R005"
+          ],
+          "at": "2026-10-10T20:54:03.239Z"
+        },
+        {
+          "action": "openspec_validate",
+          "command": "openspec validate sdd-1-initial-scaffolding --strict --json --no-interactive",
+          "result": "passed",
+          "issues": [],
+          "at": "2026-10-10T20:54:03.239Z"
+        }
+      ],
+      "error": null,
+      "completed_at": "2026-10-10T20:54:03.239Z"
+    },
+    {
+      "id": "fdc7c03f-db30-45a5-adee-95218d30af80",
+      "command": "approve_technical",
+      "phase": "complete",
+      "started_at": "2026-10-10T20:56:10.812Z",
+      "input_hashes": {
+        "functional": "8fc42aded2feebbde3c9047ac836e69cd338bdbe401ee0ef2a4764e20f8fb7c5",
+        "technical": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8"
+      },
+      "receipts": [
+        {
+          "action": "approve_technical",
+          "artifact_sha256": "d18a84bc0b52b8cc6cb35652dea2258296024d37b74042a2407a68e689afa5a8",
+          "result": "approved",
+          "at": "2026-10-10T20:56:10.812Z"
+        },
+        {
+          "action": "write_plan_metadata",
+          "path": "D:\\Dev\\Nexo\\sdd\\wip\\1-initial-scaffolding\\plan\\metadata.json",
+          "result": "created",
+          "output_sha256": "65d8460b09fd040566f05833a4c3b1129d5ac61ff2a7c08079517c7a01774d13",
+          "at": "2026-10-10T20:57:07.045Z"
+        },
+        {
+          "action": "write_tasks",
+          "path": "D:\\Dev\\Nexo\\sdd\\wip\\1-initial-scaffolding\\tasks\\tasks.json",
+          "result": "created",
+          "output_sha256": "be5fdde53596feaa17573fbdd1dba4c97f7f9c85ee2c066f09eddbebbbd67f9a",
+          "at": "2026-10-10T20:57:07.045Z"
+        },
+        {
+          "action": "write_tasks_projection",
+          "path": "D:\\Dev\\Nexo\\openspec\\changes\\sdd-1-initial-scaffolding\\tasks.md",
+          "result": "created",
+          "output_sha256": "20c4c86ea13f9fc5e91dcdb47e4fcfd780da2a2341fd354a159cbec0538bd2fc",
+          "at": "2026-10-10T20:57:07.045Z"
+        },
+        {
+          "action": "validate_tasks_and_plan_metadata",
+          "result": "passed",
+          "total_tasks": 6,
+          "dependency_graph": "acyclic",
+          "requirements": [
+            "R001",
+            "R002",
+            "R003",
+            "R004",
+            "R005"
+          ],
+          "at": "2026-10-10T20:57:44.642Z"
+        },
+        {
+          "action": "openspec_validate",
+          "command": "openspec validate sdd-1-initial-scaffolding --strict --json --no-interactive",
+          "result": "passed",
+          "issues": [],
+          "at": "2026-10-10T20:57:44.642Z"
+        },
+        {
+          "action": "openspec_apply_readiness",
+          "result": "ready",
+          "total": 6,
+          "complete": 0,
+          "remaining": 6,
+          "at": "2026-10-10T20:57:44.642Z"
+        }
+      ],
+      "error": null,
+      "completed_at": "2026-10-10T20:57:44.642Z"
+    },
+    {
+      "id": "576089d3-de56-44bf-be82-be6779832117",
+      "command": "archive",
+      "phase": "complete",
+      "completed_at": "2026-10-10T21:32:11.039Z"
+    }
+  ]
+}

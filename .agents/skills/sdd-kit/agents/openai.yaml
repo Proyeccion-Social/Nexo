@@ -1,0 +1,6 @@
+interface:
+  display_name: "SDD Kit"
+  short_description: "Orquesta features con revisiones y OpenSpec"
+  default_prompt: "Usa $sdd-kit para iniciar una feature a partir de mi descripción."
+policy:
+  allow_implicit_invocation: true

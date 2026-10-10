@@ -1,0 +1,142 @@
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const { parseFeatureComment, assertArchivedFeature, evaluate, run } = require('./sdd-policy.cjs');
+
+const metadata = { schema_version: 1, feature_id: '1-initial-scaffolding', feature_status: 'archived', required_review_state: 'APPROVED' };
+const comment = data => `<!-- sdd-feature:start -->\n\`\`\`json\n${JSON.stringify(data)}\n\`\`\`\n<!-- sdd-feature:end -->`;
+const state = { schema_version: 1, feature_id: metadata.feature_id, status: 'archived', operation: { command: 'archive', phase: 'complete' }, verification: { status: 'pass' } };
+
+function fixture() {
+  const pr = { number: 1, state: 'open', draft: false, user: { id: 1 }, base: { ref: 'main' }, head: { sha: 'abc123', repo: { name: 'fork', owner: { login: 'author' } } } };
+  const data = {
+    comments: [{ id: 1, user: { id: 1 }, body: comment(metadata) }],
+    reviews: [{ id: 1, user: { id: 2, login: 'reviewer', type: 'User' }, state: 'APPROVED', commit_id: 'abc123' }],
+    permission: 'write', state: structuredClone(state), statuses: [], requests: [],
+  };
+  const github = {
+    rest: {
+      issues: { listComments: 'comments' },
+      pulls: { listReviews: 'reviews', list: 'pulls', get: async () => ({ data: pr }) },
+      repos: {
+        getContent: async request => { data.requests.push(request); return { data: { type: 'file', encoding: 'base64', content: Buffer.from(JSON.stringify(data.state)).toString('base64') } }; },
+        getCollaboratorPermissionLevel: async () => ({ data: { permission: data.permission } }),
+        createCommitStatus: async status => { data.statuses.push(status); },
+      },
+    },
+    paginate: async method => method === 'pulls' ? [pr] : data[method],
+  };
+  return { github, repo: { owner: 'org', repo: 'Nexo' }, pr, data };
+}
+
+test('parses the machine-readable feature contract', () => {
+  assert.deepEqual(parseFeatureComment(comment(metadata)), metadata);
+});
+
+test('rejects missing, duplicate, malformed and unsafe metadata', () => {
+  for (const body of ['', comment(metadata) + comment(metadata), comment({ ...metadata, feature_id: '../secret' }), comment({ ...metadata, feature_id: '<feature-id>' }), comment({ ...metadata, feature_id: ['1-initial-scaffolding'] }), comment({ ...metadata, required_review_state: 'pending' }), comment(metadata).replace('"schema_version":1', '"schema_version":')]) {
+    assert.throws(() => parseFeatureComment(body));
+  }
+});
+
+test('rejects incomplete archive, incorrect identity and failed verification', () => {
+  for (const update of [{ status: 'merging_specs' }, { feature_id: '2-other' }, { operation: { command: 'archive', phase: 'sdd_move' } }, { verification: { status: 'fail' } }]) {
+    assert.throws(() => assertArchivedFeature(metadata, { ...state, ...update }));
+  }
+});
+
+test('reads the archived feature at the exact PR commit and accepts a real approve', async () => {
+  const f = fixture();
+  assert.equal(await evaluate(f), metadata.feature_id);
+  assert.deepEqual(f.data.requests[0], { owner: 'author', repo: 'fork', path: 'sdd/features/1-initial-scaffolding/state.json', ref: 'abc123' });
+});
+
+test('later comments cannot replace an invalid first author comment', async () => {
+  const f = fixture();
+  f.data.comments = [{ id: 5, user: { id: 1 }, body: comment(metadata) }, { id: 1, user: { id: 99 }, body: 'bot' }, { id: 2, user: { id: 1 }, body: 'missing metadata' }];
+  await assert.rejects(() => evaluate(f), /bloque sdd-feature/);
+});
+
+test('rejects an absent first author comment', async () => {
+  const f = fixture(); f.data.comments = [];
+  await assert.rejects(() => evaluate(f), /Falta el primer comentario/);
+});
+
+test('rejects stale, missing, self and unauthorized approvals', async () => {
+  for (const change of ['stale', 'absent', 'self', 'reader']) {
+    const f = fixture();
+    if (change === 'stale') f.data.reviews[0].commit_id = 'old';
+    if (change === 'absent') f.data.reviews = [];
+    if (change === 'self') f.data.reviews[0].user.id = 1;
+    if (change === 'reader') f.data.permission = 'read';
+    await assert.rejects(() => evaluate(f), /Falta un Approve/);
+  }
+});
+
+test('dismissed approval and changes requested supersede earlier approve', async () => {
+  for (const decision of ['DISMISSED', 'CHANGES_REQUESTED']) {
+    const f = fixture();
+    f.data.reviews.push({ ...f.data.reviews[0], id: 2, state: decision });
+    await assert.rejects(() => evaluate(f));
+  }
+});
+
+test('a comment-only review preserves an approval', async () => {
+  const f = fixture();
+  f.data.reviews.push({ ...f.data.reviews[0], id: 2, state: 'COMMENTED' });
+  assert.equal(await evaluate(f), metadata.feature_id);
+});
+
+test('a different reviewer requesting changes blocks an approve', async () => {
+  const f = fixture();
+  f.data.reviews.push({ ...f.data.reviews[0], id: 2, user: { id: 3, login: 'other', type: 'User' }, state: 'CHANGES_REQUESTED' });
+  await assert.rejects(() => evaluate(f), /solicita cambios/);
+});
+
+function runner(f) {
+  return { ...f, context: { repo: f.repo, serverUrl: 'https://github.com', runId: 1 }, core: { summary: { addHeading() { return this; }, addTable() { return this; }, async write() {} }, setFailed(message) { f.data.failed = message; } } };
+}
+
+test('publishes pending then success on PR head', async () => {
+  const f = fixture(); await run(runner(f));
+  assert.deepEqual(f.data.statuses.map(s => [s.sha, s.state, s.context]), [['abc123', 'pending', 'SDD / Feature gate'], ['abc123', 'success', 'SDD / Feature gate']]);
+});
+
+test('publishes failure when approval is removed', async () => {
+  const f = fixture(); f.data.reviews = []; await run(runner(f));
+  assert.equal(f.data.statuses.at(-1).state, 'failure');
+  assert.ok(f.data.failed);
+});
+
+test('API errors fail closed', async () => {
+  const f = fixture(); f.github.rest.repos.getContent = async () => { throw new Error('API unavailable'); };
+  await run(runner(f));
+  assert.equal(f.data.statuses.at(-1).state, 'failure');
+});
+
+test('a failing PR prevents another PR sharing its commit from publishing success', async () => {
+  const f = fixture();
+  const second = { ...f.pr, number: 2 };
+  const paginate = f.github.paginate;
+  f.github.paginate = async (method, args) => {
+    if (method === 'pulls') return [f.pr, second];
+    if (method === 'comments' && args.issue_number === 2) return [];
+    return paginate(method, args);
+  };
+  f.github.rest.pulls.get = async args => ({ data: args.pull_number === 2 ? second : f.pr });
+  await run(runner(f));
+  assert.deepEqual(f.data.statuses.map(s => s.state), ['pending', 'failure']);
+  assert.match(f.data.statuses.at(-1).description, /PR #2/);
+});
+
+test('a new commit during evaluation cannot publish a stale success', async () => {
+  const f = fixture();
+  let calls = 0;
+  f.github.rest.pulls.get = async () => {
+    const current = structuredClone(f.pr);
+    if (++calls > 1) current.head.sha = 'new-commit';
+    return { data: current };
+  };
+  await run(runner(f));
+  assert.equal(f.data.statuses.at(-1).state, 'failure');
+  assert.match(f.data.statuses.at(-1).description, /cambió/);
+});
