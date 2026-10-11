@@ -20,8 +20,8 @@ Contrato validado por el check obligatorio de CI:
 - Reevaluar al cambiar la descripción, los commits o las revisiones. Configurar este check
   como obligatorio y las aprobaciones en la protección de la rama destino.
 
-El workflow SDD gate implementa este contrato. La protección de ramas debe
-exigir sus resultados; consultar docs/ci.md para activar el bloqueo de merge.
+El workflow `.github/workflows/sdd-gate.yml` implementa este contrato. La
+protección de ramas debe exigir sus resultados obligatorios.
 -->
 
 <!-- sdd-feature:start -->
@@ -48,6 +48,11 @@ Estado de cierre: `sdd/features/<feature-id>/state.json`.
 ## Verificación
 
 <Indicar las comprobaciones realizadas, sus resultados y las limitaciones relevantes.>
+
+## Estrategia de merge
+
+- PR desde `feature/*` hacia `develop`: usar **Squash and merge**.
+- PR desde `release/*` hacia `main`: usar **Squash and merge**.
 
 ## Aprobación
 

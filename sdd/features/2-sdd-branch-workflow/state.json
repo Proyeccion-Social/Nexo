@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "feature_id": "2-sdd-branch-workflow",
+  "slug": "sdd-branch-workflow",
+  "description": "Actualizar SDD Kit y la plantilla de PR para exigir ramas feature/<feature_id>, registrar su base y documentar el uso de Squash and merge en las rutas feature a develop y release a main.",
+  "git": {
+    "branch": "feature/2-sdd-branch-workflow",
+    "base_branch": "main",
+    "base_sha": "1361a5a78a38bbada2cae4faeaa318a812bbc349",
+    "created_at": "2026-10-10T22:17:16Z"
+  },
+  "number": 2,
+  "revision": 14,
+  "status": "archived",
+  "created_at": "2026-10-10T22:17:16Z",
+  "updated_at": "2026-10-10T22:27:19Z",
+  "openspec": {
+    "root": "D:\\Dev\\Nexo-feature-2-sdd-branch-workflow\\openspec",
+    "change_name": "sdd-2-sdd-branch-workflow",
+    "schema_name": "spec-driven",
+    "change_root": "D:\\Dev\\Nexo-feature-2-sdd-branch-workflow\\openspec\\changes\\sdd-2-sdd-branch-workflow",
+    "archive_path": "D:\\Dev\\Nexo-feature-2-sdd-branch-workflow\\openspec\\changes\\archive\\2026-10-10-sdd-2-sdd-branch-workflow"
+  },
+  "artifacts": {
+    "functional": {
+      "path": "functional/functional.md",
+      "revision": 1,
+      "sha256": "c7ec19721027a66cdf226d9ce912ee890e71fc76a7c658b8929e5998dd0e7ec5",
+      "inputs": [],
+      "valid": true
+    },
+    "technical": {
+      "sha256": "034998fad2afc1415dc9c87928323ea90c7d70f50de83448fd59dc9654f83ab0",
+      "inputs": [
+        "c7ec19721027a66cdf226d9ce912ee890e71fc76a7c658b8929e5998dd0e7ec5",
+        "44976feb1191bef6475922526e84b4ee8f2908591d72567ee1ce2db77948ceba"
+      ],
+      "valid": true,
+      "revision": 1,
+      "openspec_path": "openspec/changes/sdd-2-sdd-branch-workflow/design.md",
+      "path": "technical/technical.md",
+      "openspec_sha256": "e1a83c93c8a445c29c1fb6287537f9253f49ad66865838d5fdde578ca1e05713"
+    },
+    "plan": {
+      "revision": 1,
+      "path": "plan/metadata.json",
+      "inputs": [
+        "c7ec19721027a66cdf226d9ce912ee890e71fc76a7c658b8929e5998dd0e7ec5",
+        "034998fad2afc1415dc9c87928323ea90c7d70f50de83448fd59dc9654f83ab0"
+      ],
+      "valid": true,
+      "sha256": "ba86620f514a59a991735fbc49b920fa686252898f5b4b676f57e91e29a5b45f"
+    },
+    "tasks": {
+      "revision": 5,
+      "path": "tasks/tasks.json",
+      "valid": true,
+      "inputs": [
+        "c7ec19721027a66cdf226d9ce912ee890e71fc76a7c658b8929e5998dd0e7ec5",
+        "034998fad2afc1415dc9c87928323ea90c7d70f50de83448fd59dc9654f83ab0",
+        "ba86620f514a59a991735fbc49b920fa686252898f5b4b676f57e91e29a5b45f"
+      ],
+      "openspec_path": "openspec/changes/sdd-2-sdd-branch-workflow/tasks.md",
+      "sha256": "5fecef16005ebd8ed517dad010acf240fc52799d72d9a0e6f1cf919710e05a02",
+      "openspec_sha256": "28facc1b06ccdb17366a3a043fce18a008681c2a0592154d1fa8d251257dff52"
+    }
+  },
+  "approvals": {
+    "functional": {
+      "artifact_sha256": "c7ec19721027a66cdf226d9ce912ee890e71fc76a7c658b8929e5998dd0e7ec5",
+      "source": "sdd_kit.approve_functional 2-sdd-branch-workflow",
+      "approved_at": "2026-10-10T22:19:28Z"
+    },
+    "technical": {
+      "approved_at": "2026-10-10T22:21:23Z",
+      "source": "sdd_kit.approve_technical 2-sdd-branch-workflow",
+      "artifact_sha256": "034998fad2afc1415dc9c87928323ea90c7d70f50de83448fd59dc9654f83ab0"
+    }
+  },
+  "operation": {
+    "id": "e2262039-504e-4b3d-9ab9-5e10daabf618",
+    "started_at": "2026-10-10T22:26:41Z",
+    "command": "archive",
+    "receipts": [
+      {
+        "sdd_destination": "sdd/features/2-sdd-branch-workflow",
+        "result": "verified",
+        "destination_conflicts": "none",
+        "openspec_destination": "D:\\Dev\\Nexo-feature-2-sdd-branch-workflow\\openspec\\changes\\archive\\2026-10-10-sdd-2-sdd-branch-workflow",
+        "action": "prepare",
+        "sdd_source": "sdd/wip/2-sdd-branch-workflow",
+        "openspec_source": "D:\\Dev\\Nexo-feature-2-sdd-branch-workflow\\openspec\\changes\\sdd-2-sdd-branch-workflow"
+      },
+      {
+        "action": "global_specs_assessment",
+        "reason": "skip_specs=true; no product behavior delta; global specs describe the application runtime and capabilities",
+        "functional": "no-op",
+        "technical": "no-op",
+        "result": "verified"
+      },
+      {
+        "result": "verified_by_recovery",
+        "action": "openspec_archive",
+        "skip_specs": true,
+        "detail": "Active change absent; dated archive exists and preserves .openspec.yaml.",
+        "path": "D:\\Dev\\Nexo-feature-2-sdd-branch-workflow\\openspec\\changes\\archive\\2026-10-10-sdd-2-sdd-branch-workflow"
+      },
+      {
+        "functional": "no-op",
+        "action": "global_specs_assessment",
+        "result": "verified",
+        "technical": "no-op",
+        "reason": "skip_specs=true; no product behavior delta; global specifications remain application-only"
+      },
+      {
+        "result": "verified",
+        "destination": "sdd/features/2-sdd-branch-workflow",
+        "action": "sdd_move",
+        "source": "sdd/wip/2-sdd-branch-workflow",
+        "artifact_count": 5
+      },
+      {
+        "result": "verified",
+        "action": "complete",
+        "sdd_state": "archived",
+        "artifact_hashes": "verified",
+        "openspec_archive": "D:\\Dev\\Nexo-feature-2-sdd-branch-workflow\\openspec\\changes\\archive\\2026-10-10-sdd-2-sdd-branch-workflow"
+      }
+    ],
+    "phase": "complete",
+    "error": null,
+    "input_hashes": {
+      "functional": "c7ec19721027a66cdf226d9ce912ee890e71fc76a7c658b8929e5998dd0e7ec5",
+      "tasks": "5fecef16005ebd8ed517dad010acf240fc52799d72d9a0e6f1cf919710e05a02",
+      "verification": "8f52649afca8c7919e43e05d7893cf828c113aaf1ab1874005ed3ae4f0b53dfc",
+      "technical": "034998fad2afc1415dc9c87928323ea90c7d70f50de83448fd59dc9654f83ab0"
+    }
+  },
+  "verification": {
+    "status": "pass",
+    "inputs": [
+      "c7ec19721027a66cdf226d9ce912ee890e71fc76a7c658b8929e5998dd0e7ec5",
+      "034998fad2afc1415dc9c87928323ea90c7d70f50de83448fd59dc9654f83ab0",
+      "5fecef16005ebd8ed517dad010acf240fc52799d72d9a0e6f1cf919710e05a02",
+      "28facc1b06ccdb17366a3a043fce18a008681c2a0592154d1fa8d251257dff52",
+      "8f52649afca8c7919e43e05d7893cf828c113aaf1ab1874005ed3ae4f0b53dfc"
+    ],
+    "evidence": [
+      {
+        "result": "pass",
+        "kind": "openspec_validate",
+        "details": "Change 'sdd-2-sdd-branch-workflow' is valid\r\nℹ [INFO] file: skip_specs is set in .openspec.yaml: change declares no spec-level behavior changes, zero deltas accepted"
+      },
+      {
+        "result": "pass",
+        "kind": "git_diff_check",
+        "details": "warning: in the working copy of 'feature_template.md', LF will be replaced by CRLF the next time Git touches it"
+      },
+      {
+        "result": "pass",
+        "kind": "requirements_coverage",
+        "details": {
+          "FR001": true,
+          "FR002": true,
+          "FR003": true,
+          "NoAutoBase": true,
+          "GateExists": true
+        }
+      },
+      {
+        "kind": "git_snapshot",
+        "diff_sha256": "8f52649afca8c7919e43e05d7893cf828c113aaf1ab1874005ed3ae4f0b53dfc",
+        "head": "1361a5a78a38bbada2cae4faeaa318a812bbc349"
+      }
+    ]
+  },
+  "history": [
+    {
+      "at": "2026-10-10T22:17:16Z",
+      "event": "feature_initialized",
+      "detail": "Identidad 2-sdd-branch-workflow reservada en feature/2-sdd-branch-workflow desde main.",
+      "status": "drafting_functional"
+    },
+    {
+      "at": "2026-10-10T22:17:16Z",
+      "event": "init_completed",
+      "detail": "Especificación funcional generada y enlazada con OpenSpec.",
+      "status": "pending_functional_review"
+    },
+    {
+      "at": "2026-10-10T22:19:28Z",
+      "event": "functional_approved",
+      "detail": "Aprobación explícita de la revisión funcional vigente.",
+      "status": "pending_functional_review"
+    },
+    {
+      "at": "2026-10-10T22:19:28Z",
+      "event": "technical_generated",
+      "detail": "Especificación técnica SDD y proyección OpenSpec design generadas.",
+      "status": "pending_technical_review"
+    },
+    {
+      "at": "2026-10-10T22:21:23Z",
+      "detail": "Aprobación explícita de la revisión técnica vigente.",
+      "status": "pending_technical_review",
+      "event": "technical_approved"
+    },
+    {
+      "at": "2026-10-10T22:21:24Z",
+      "detail": "Aprobación técnica vigente; plan resumido solo en metadata y tareas reconciliadas con OpenSpec.",
+      "status": "ready_for_implementation",
+      "event": "technical_approved_and_planned"
+    },
+    {
+      "detail": "Aprobaciones y tareas verificadas antes de iniciar apply.",
+      "at": "2026-10-10T22:22:41Z",
+      "event": "implementation_started",
+      "status": "implementing"
+    },
+    {
+      "status": "implementing",
+      "detail": "T001 verificada y reconciliada con OpenSpec.",
+      "at": "2026-10-10T22:22:58Z",
+      "event": "task_completed"
+    },
+    {
+      "detail": "T002 verificada y reconciliada con OpenSpec.",
+      "status": "implementing",
+      "event": "task_completed",
+      "at": "2026-10-10T22:23:14Z"
+    },
+    {
+      "status": "implementing",
+      "event": "task_completed",
+      "detail": "T003 verificada y reconciliada con OpenSpec.",
+      "at": "2026-10-10T22:23:52Z"
+    },
+    {
+      "event": "implementation_completed",
+      "detail": "Cuatro tareas completadas y cobertura funcional/técnica verificada.",
+      "status": "merging_specs",
+      "at": "2026-10-10T22:24:24Z"
+    },
+    {
+      "event": "archive_started",
+      "status": "merging_specs",
+      "detail": "Inputs, approvals, tasks, destinations and no-delta specs assessed.",
+      "at": "2026-10-10T22:26:41Z"
+    },
+    {
+      "event": "archive_resumed",
+      "at": "2026-10-10T22:27:19Z",
+      "status": "merging_specs",
+      "detail": "OpenSpec archive verified from durable files after interruption; resuming SDD move without repeating OpenSpec archive."
+    },
+    {
+      "event": "archive_completed",
+      "at": "2026-10-10T22:27:19Z",
+      "status": "archived",
+      "detail": "OpenSpec y SDD archivados; estructura y artefactos verificados."
+    }
+  ]
+}
