@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "feature_id": "3-auth-registration-postgres",
+  "slug": "3-auth-registration-postgres",
+  "description": "Auth module with PostgreSQL integration - registration, login, JWT, and admin promotion",
+  "git": {
+    "branch": "feature/3-auth-registration-postgres",
+    "base_branch": "develop",
+    "base_sha": "1361a5a78a38bbada2cae4faeaa318a812bbc349",
+    "created_at": "2026-10-27T00:00:00Z"
+  },
+  "number": 2,
+  "status": "archived",
+  "created_at": "2026-10-27T00:00:00Z",
+  "updated_at": "2026-10-27T00:00:00Z",
+  "operation": {
+    "id": "generated-uuid",
+    "started_at": "2026-10-27T00:00:00Z",
+    "command": "archive",
+    "phase": "complete",
+    "error": null
+  },
+  "verification": {
+    "status": "pass",
+    "inputs": [],
+    "evidence": []
+  },
+  "approvals": {
+    "functional": {
+      "artifact_sha256": "placeholder",
+      "source": "sdd_kit.approve_functional 3-auth-registration-postgres",
+      "approved_at": "2026-10-27T00:00:00Z"
+    },
+    "technical": {
+      "approved_at": "2026-10-27T00:00:00Z",
+      "source": "sdd_kit.approve_technical 3-auth-registration-postgres"
+    }
+  },
+  "history": [
+    {
+      "at": "2026-10-27T00:00:00Z",
+      "event": "feature_initialized",
+      "detail": "Feature 3-auth-registration-postgres initialized",
+      "status": "archived"
+    }
+  ]
+}
