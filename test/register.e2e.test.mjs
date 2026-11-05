@@ -99,3 +99,20 @@ test('login emite un token y /auth/me exige firma válida y cuenta activa', asyn
   assert.equal((await fetch(`${baseUrl}/auth/me`,
     { headers: { authorization: `Bearer ${expired}` } })).status, 401);
 });
+
+test('acepta 72 bytes UTF-8 y rechaza 73 bytes en registro y login', async () => {
+  const password72Bytes = 'é'.repeat(36);
+  assert.equal(Buffer.byteLength(password72Bytes, 'utf8'), 72);
+  const identity = { email: 'bytes@udistrital.edu.co', nickname: 'ByteLimit_1',
+    studentCode: '20231515043', password: password72Bytes };
+  assert.equal((await post('/auth/register', identity)).status, 201);
+  assert.equal((await post('/auth/login',
+    { email: identity.email, password: password72Bytes })).status, 200);
+
+  const password73Bytes = `${password72Bytes}a`;
+  assert.equal(Buffer.byteLength(password73Bytes, 'utf8'), 73);
+  assert.equal((await post('/auth/register',
+    { ...identity, nickname: 'ByteLimit_2', studentCode: '20231515044', password: password73Bytes })).status, 400);
+  assert.equal((await post('/auth/login',
+    { email: identity.email, password: password73Bytes })).status, 400);
+});

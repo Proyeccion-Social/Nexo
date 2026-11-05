@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
+import { MaxPasswordBytes } from './max-password-bytes.decorator.js';
 
 export class RegisterDto {
   @ApiProperty({ example: 'estudiante@udistrital.edu.co', format: 'email' })
@@ -13,11 +14,12 @@ export class RegisterDto {
   @Matches(/^[A-Za-z][A-Za-z0-9_]{2,29}$/, { message: 'El apodo debe comenzar con una letra y contener de 3 a 30 letras, números o guiones bajos' })
   nickname!: string;
 
-  @ApiProperty({ example: 'UnaClaveSegura123', minLength: 8, maxLength: 72, writeOnly: true })
+  @ApiProperty({ example: 'UnaClaveSegura123', minLength: 8, writeOnly: true,
+    description: 'Mínimo 8 caracteres y máximo 72 bytes UTF-8.' })
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
-  @MaxLength(72)
+  @MaxPasswordBytes()
   password!: string;
 
   @ApiProperty({ example: '20231515042', pattern: '^\\d{11}$' })
