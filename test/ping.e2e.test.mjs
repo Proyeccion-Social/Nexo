@@ -52,6 +52,16 @@ test('GET /ping conserva texto plano cuando Accept solicita JSON', async () => {
   assert.equal(await response.text(), 'pong');
 });
 
+test('OpenAPI publica el contrato de entrada de POST /auth/register', async () => {
+  const response = await fetch(`${baseUrl}/api-json`);
+  assert.equal(response.status, 200);
+  const document = await response.json();
+  const operation = document.paths['/auth/register'].post;
+  assert.equal(operation.requestBody.content['application/json'].schema.$ref, '#/components/schemas/RegisterDto');
+  assert.deepEqual(document.components.schemas.RegisterDto.required.sort(),
+    ['email', 'nickname', 'password', 'studentCode'].sort());
+});
+
 function runBootstrap(port) {
   const result = spawnSync(process.execPath, ['dist/main.js'], {
     cwd: projectRoot,
