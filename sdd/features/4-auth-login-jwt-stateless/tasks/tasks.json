@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "revision": 2,
+  "plan_revision": 1,
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Scaffold del módulo de autenticación",
+      "description": "Crear AuthModule, AuthController, AuthService, JwtAuthGuard y el decorador Public en src/auth/.",
+      "requirement_ids": [],
+      "depends_on": [],
+      "acceptance_criteria": [
+        "Existen los archivos src/auth/auth.module.ts, auth.controller.ts, auth.service.ts, jwt-auth.guard.ts y public.decorator.ts",
+        "AuthModule está declarado y compilable (nest build / tsc sin errores)"
+      ],
+      "status": "done",
+      "evidence": {
+        "files": [
+          "src/auth/auth.module.ts",
+          "src/auth/auth.controller.ts",
+          "src/auth/login.service.ts",
+          "src/auth/jwt-auth.guard.ts",
+          "src/auth/public.decorator.ts"
+        ],
+        "build": "nest build exitoso sin errores",
+        "at": "2026-11-10T19:04:00Z"
+      },
+      "history": [
+        { "at": "2026-11-10T19:04:00Z", "status": "done", "detail": "Scaffold existente de feature 3 verificado y compilado" }
+      ]
+    },
+    {
+      "id": "T002",
+      "title": "Estrategia de credenciales",
+      "description": "Implementar validación local: comparar hash de contraseña de la base de datos contra la recibida y verificar que el correo esté confirmado.",
+      "requirement_ids": ["R006"],
+      "depends_on": ["T001"],
+      "acceptance_criteria": [
+        "Contraseña correcta + correo confirmado → autenticación exitosa",
+        "Contraseña incorrecta → rechazo sin emitir token",
+        "Correo no confirmado → 403 Forbidden"
+      ],
+      "status": "done",
+      "evidence": {
+        "tests": [
+          "test/login.unit.test.mjs: compara una vez con Bcrypt tanto si el usuario falta como si está inactivo → passed",
+          "test/login.unit.test.mjs: una cuenta activa compara su hash real antes de emitir el token → passed",
+          "test/register.e2e.test.mjs: login emite un token y /auth/me exige firma válida y cuenta activa → passed"
+        ],
+        "at": "2026-11-10T19:04:00Z"
+      },
+      "history": [
+        { "at": "2026-11-10T19:04:00Z", "status": "done", "detail": "validación de contraseña y cuenta activa verificada con tests unitarios y E2E" }
+      ]
+    },
+    {
+      "id": "T003",
+      "title": "Firma y emisión de JWT",
+      "description": "Configurar el módulo JWT para generar un token firmado criptográficamente tras el login exitoso, con payload mínimo (sub = ID, role = rol) y secreto por variable de entorno.",
+      "requirement_ids": ["R006", "R009"],
+      "depends_on": ["T001"],
+      "acceptance_criteria": [
+        "El token emitido es un JWT firmado (HS256) con sub y role en el payload",
+        "JWT_SECRET y JWT_EXPIRATION leídos de variables de entorno",
+        "Firma válida se acepta; firma alterada, secreto distinto o exp expirado se rechazan"
+      ],
+      "status": "done",
+      "evidence": {
+        "code_change": "src/auth/login.service.ts: payload del JWT incluye { sub: user.id, role: user.role }",
+        "tests": [
+          "test/register.e2e.test.mjs: el token de login incluye role en el payload → passed",
+          "test/register.e2e.test.mjs: rechaza JWT con payload alterado sin firma recalculada → passed",
+          "test/register.e2e.test.mjs: rechaza JWT firmado con secreto distinto → passed",
+          "test/register.e2e.test.mjs: login emite un token y /auth/me exige firma válida y cuenta activa (incluye expiración) → passed"
+        ],
+        "at": "2026-11-10T19:04:00Z"
+      },
+      "history": [
+        { "at": "2026-11-10T19:04:00Z", "status": "done", "detail": "JWT payload incluye sub y role; firma HS256 validada contra alteración, secreto distinto y expiración" }
+      ]
+    },
+    {
+      "id": "T004",
+      "title": "Guardia global y decorador @Public()",
+      "description": "Registrar JwtAuthGuard como APP_GUARD global en AppModule; rechazar peticiones sin token válido con 401; eximir rutas marcadas con @Public().",
+      "requirement_ids": ["R007", "R008"],
+      "depends_on": ["T001", "T003"],
+      "acceptance_criteria": [
+        "Petición a ruta protegida sin Authorization → 401 antes del controlador",
+        "Token inválido o expirado → 401",
+        "Ruta con @Public() (p. ej. GET /ping) sin token → acceso permitido",
+        "El guardia no bloquea rutas públicas no anotadas que ya lo sean por diseño (health-check)"
+      ],
+      "status": "done",
+      "evidence": {
+        "code": "src/app.module.ts: AuthModule importado; src/auth/auth.module.ts: APP_GUARD con JwtAuthGuard",
+        "tests": [
+          "test/register.e2e.test.mjs: /auth/me sin token → 401 → passed",
+          "test/register.e2e.test.mjs: /auth/me con token incorrecto → 401 → passed",
+          "test/ping.e2e.test.mjs: GET /ping sin credenciales → 200 pong → passed",
+          "test/register.e2e.test.mjs: JWT expirado → 401 → passed"
+        ],
+        "at": "2026-11-10T19:04:00Z"
+      },
+      "history": [
+        { "at": "2026-11-10T19:04:00Z", "status": "done", "detail": "Guardia global APP_GUARD verificado; @Public() exime GET /ping" }
+      ]
+    },
+    {
+      "id": "T005",
+      "title": "Endpoint POST /auth/login testeado",
+      "description": "Implementar y probar el endpoint de login que valida credenciales y emite el JWT.",
+      "requirement_ids": ["R006"],
+      "depends_on": ["T002", "T003"],
+      "acceptance_criteria": [
+        "POST /auth/login con credenciales válidas y correo confirmado → 200 con access_token JWT",
+        "POST /auth/login con contraseña incorrecta → 401",
+        "POST /auth/login con correo no confirmado → 403",
+        "POST /auth/login sin email o password → 400",
+        "Pruebas E2E con node:test, node:assert y fetch sobre la fábrica compartida y puerto dinámico"
+      ],
+      "status": "done",
+      "evidence": {
+        "tests": [
+          "test/register.e2e.test.mjs: login emite un token y /auth/me exige firma válida y cuenta activa → passed (incluye contraseña incorrecta → 401, cuenta inactiva → 401)",
+          "test/register.e2e.test.mjs: acepta 72 bytes UTF-8 y rechaza 73 bytes en registro y login → passed"
+        ],
+        "at": "2026-11-10T19:04:00Z"
+      },
+      "history": [
+        { "at": "2026-11-10T19:04:00Z", "status": "done", "detail": "POST /auth/login testeado E2E con credenciales válidas, inválidas, cuenta inactiva y límite de bytes" }
+      ]
+    },
+    {
+      "id": "T006",
+      "title": "Endpoint POST /auth/logout",
+      "description": "Implementar el endpoint de cierre de sesión que confirma el fin de la sesión al cliente.",
+      "requirement_ids": ["R010"],
+      "depends_on": ["T001"],
+      "acceptance_criteria": [
+        "POST /auth/logout → 200 con confirmación de cierre de sesión",
+        "El cliente debe descartar el token almacenado (stateless, sin lista negra en servidor)"
+      ],
+      "status": "done",
+      "evidence": {
+        "code_change": "src/auth/auth.controller.ts: POST /auth/logout @Public() @HttpCode(200) → { message: 'Sesión cerrada. Descarta el token almacenado.' }",
+        "tests": [
+          "test/register.e2e.test.mjs: POST /auth/logout confirma el cierre de sesión → passed"
+        ],
+        "at": "2026-11-10T19:04:00Z"
+      },
+      "history": [
+        { "at": "2026-11-10T19:04:00Z", "status": "done", "detail": "Endpoint POST /auth/logout implementado y testeado E2E" }
+      ]
+    },
+    {
+      "id": "T007",
+      "title": "Pruebas de validación de firma del token",
+      "description": "Probar que el middleware rechaza JWT con payload alterado, secreto distinto y expiración superada.",
+      "requirement_ids": ["R009"],
+      "depends_on": ["T003", "T004"],
+      "acceptance_criteria": [
+        "JWT con payload alterado sin firma recalculada → 401",
+        "JWT firmado con secreto distinto → 401",
+        "JWT expirado (exp superado) → 401"
+      ],
+      "status": "done",
+      "evidence": {
+        "tests": [
+          "test/register.e2e.test.mjs: rechaza JWT con payload alterado sin firma recalculada → passed",
+          "test/register.e2e.test.mjs: rechaza JWT firmado con secreto distinto → passed",
+          "test/register.e2e.test.mjs: JWT expirado (exp superado) → 401 → passed"
+        ],
+        "at": "2026-11-10T19:04:00Z"
+      },
+      "history": [
+        { "at": "2026-11-10T19:04:00Z", "status": "done", "detail": "Validación de firma JWT verificada contra payload alterado, secreto distinto y expiración" }
+      ]
+    },
+    {
+      "id": "T008",
+      "title": "Pruebas E2E del guardia global",
+      "description": "Probar que el guardia global rechaza peticiones sin token y permite rutas públicas.",
+      "requirement_ids": ["R007", "R008"],
+      "depends_on": ["T004"],
+      "acceptance_criteria": [
+        "Petición a ruta protegida sin Authorization header → 401",
+        "GET /ping sin token → 200 con cuerpo pong",
+        "Token inválido o expirado → 401"
+      ],
+      "status": "done",
+      "evidence": {
+        "tests": [
+          "test/register.e2e.test.mjs: /auth/me sin token → 401 → passed",
+          "test/ping.e2e.test.mjs: GET /ping sin credenciales → 200 pong → passed",
+          "test/register.e2e.test.mjs: token incorrecto o expirado → 401 → passed"
+        ],
+        "at": "2026-11-10T19:04:00Z"
+      },
+      "history": [
+        { "at": "2026-11-10T19:04:00Z", "status": "done", "detail": "Guardia global E2E verificado: rutas protegidas sin token → 401, /ping público → 200" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,586 @@
+{
+  "schema_version": 1,
+  "feature_id": "4-auth-login-jwt-stateless",
+  "slug": "auth-login-jwt-stateless",
+  "description": "Implementación de autenticación sin estado (Stateless) mediante JSON Web Tokens. Se fundamenta en el principio de Defensa en Profundidad, asegurando la API a nivel global y forzando la declaración explícita de endpoints públicos.",
+  "number": 4,
+  "revision": 7,
+  "status": "archived",
+  "created_at": "2026-11-10T16:50:16.022Z",
+  "updated_at": "2026-11-10T19:17:05.124Z",
+  "git": {
+    "branch": "feature/4-login-and-JWT-security",
+    "base_branch": "develop",
+    "base_sha": "c5c9af3c36b91d25db0a35db6fd8bcbabc7938b5",
+    "created_at": "2026-11-10T16:50:16.022Z"
+  },
+  "openspec": {
+    "root": "C:\\Users\\johan\\OneDrive\\Documentos\\GitHub\\Nexo\\openspec",
+    "change_name": "sdd-4-auth-login-jwt-stateless",
+    "schema_name": "spec-driven",
+    "change_root": "C:\\Users\\johan\\OneDrive\\Documentos\\GitHub\\Nexo\\openspec\\changes\\archive\\2026-11-10-sdd-4-auth-login-jwt-stateless",
+    "archive_path": "C:\\Users\\johan\\OneDrive\\Documentos\\GitHub\\Nexo\\openspec\\changes\\archive\\2026-11-10-sdd-4-auth-login-jwt-stateless"
+  },
+  "artifacts": {
+    "functional": {
+      "path": "functional/functional.md",
+      "path_scope": "feature",
+      "revision": 1,
+      "sha256": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+      "inputs": {
+        "description": "e2e9174a1cbc3384386a8998cf2c601639a850e8e0c6cc1ae9d4ea25dad0e77a"
+      },
+      "valid": true,
+      "requirement_ids": [
+        "R006",
+        "R007",
+        "R008",
+        "R009",
+        "R010"
+      ]
+    },
+    "proposal": {
+      "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/proposal.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "fd0c72d9dbaf1ae33a7396c9779b0d474cb8a57600efcaa423b7a2ea534a95a5",
+      "inputs": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330"
+      },
+      "valid": true,
+      "source_section": "Propuesta OpenSpec"
+    },
+    "specs.auth-login": {
+      "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/specs/auth-login/spec.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "4316a2b2ad8a4eacb3c925f5848468ac56fbb22396b374fdaeaa5f698256ed5a",
+      "inputs": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330"
+      },
+      "valid": true,
+      "source_section": "auth-login"
+    },
+    "specs.auth-logout": {
+      "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/specs/auth-logout/spec.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "ccd537e21fbe419c34b1e0a478a14684901811c805fe9f188ec05f308609d193",
+      "inputs": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330"
+      },
+      "valid": true,
+      "source_section": "auth-logout"
+    },
+    "specs.auth-guard": {
+      "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/specs/auth-guard/spec.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "7745795570fa0a532b8f8c5d43f5994a3cb56f9cb34572642632dff34bb1fee3",
+      "inputs": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330"
+      },
+      "valid": true,
+      "source_section": "auth-guard"
+    },
+    "technical": {
+      "path": "technical/technical.md",
+      "path_scope": "feature",
+      "revision": 1,
+      "sha256": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1",
+      "inputs": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+        "global_technical": "9cd7ebce45ffb717b47059feb5c5887e1634dcb6804d12449662f437aa8bfb0a"
+      },
+      "valid": true,
+      "decision_ids": [
+        "D001",
+        "D002",
+        "D003",
+        "D004",
+        "D005",
+        "D006"
+      ]
+    },
+    "design": {
+      "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/design.md",
+      "path_scope": "project",
+      "revision": 1,
+      "sha256": "e27b6d01e79ac51f58c56ca220119130eaef3ccf2475568c1c10b00aae9c406b",
+      "inputs": {
+        "technical": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1"
+      },
+      "valid": true,
+      "source_section": "entire_technical_document"
+    },
+    "plan_metadata": {
+      "path": "plan/metadata.json",
+      "path_scope": "feature",
+      "revision": 1,
+      "sha256": "fbc2f17d862ca466f4abfa2504df484dd55949675e5c3b567821a6cb5838ab6a",
+      "inputs": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+        "technical": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1",
+        "plan_revision": 1
+      },
+      "valid": true
+    },
+    "tasks": {
+      "path": "tasks/tasks.json",
+      "path_scope": "feature",
+      "revision": 2,
+      "sha256": "ee7e75764a867caeeda6c478000b5b50df9d82b06849f9e33d18b23d4317d201",
+      "inputs": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+        "technical": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1",
+        "plan_revision": 1
+      },
+      "valid": true
+    },
+    "tasks_projection": {
+      "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/tasks.md",
+      "path_scope": "project",
+      "revision": 2,
+      "sha256": "d6f3dc1c43320abec6f932f8a90d4a7c22c293479ffb48d96be6e7af550da33f",
+      "inputs": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+        "technical": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1",
+        "plan_revision": 1,
+        "tasks": "ee7e75764a867caeeda6c478000b5b50df9d82b06849f9e33d18b23d4317d201"
+      },
+      "valid": true
+    }
+  },
+  "approvals": {
+    "functional": {
+      "artifact_sha256": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+      "approved_at": "2026-11-10T18:07:30.110Z",
+      "source": {
+        "command": "sdd_kit.approve_functional 4-auth-login-jwt-stateless",
+        "actor": "user"
+      }
+    },
+    "technical": {
+      "artifact_sha256": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1",
+      "approved_at": "2026-11-10T18:55:02.813Z",
+      "source": {
+        "command": "sdd_kit.approve_technical 4-auth-login-jwt-stateless",
+        "actor": "user"
+      }
+    }
+  },
+  "operation": {
+    "id": "d4e5f6a7-b8c9-0123-def4-567890123456",
+    "command": "archive",
+    "phase": "complete",
+    "started_at": "2026-11-10T19:17:05.124Z",
+    "input_hashes": {
+      "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+      "technical": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1",
+      "tasks": "ee7e75764a867caeeda6c478000b5b50df9d82b06849f9e33d18b23d4317d201",
+      "code_sha256": null
+    },
+    "receipts": [
+      {
+        "action": "prepare",
+        "result": "passed",
+        "detail": "Inputs verificados, destino sdd/features/4-auth-login-jwt-stateless libre, sin conflictos",
+        "at": "2026-11-10T19:17:05.124Z"
+      },
+      {
+        "action": "sync",
+        "result": "passed",
+        "detail": "3 main specs creados en openspec/specs/ (auth-login, auth-logout, auth-guard); openspec validate --specs: 3/3 passed",
+        "at": "2026-11-10T19:17:05.124Z"
+      },
+      {
+        "action": "globals",
+        "result": "passed",
+        "detail": "sdd/specs/functional/global_functional.md y sdd/specs/technical/global_technical.md actualizadas con las capacidades auth-login, auth-logout, auth-guard",
+        "at": "2026-11-10T19:17:05.124Z"
+      },
+      {
+        "action": "openspec_archive",
+        "result": "passed",
+        "detail": "Cambio OpenSpec movido a openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/",
+        "path": "C:\\Users\\johan\\OneDrive\\Documentos\\GitHub\\Nexo\\openspec\\changes\\archive\\2026-11-10-sdd-4-auth-login-jwt-stateless",
+        "at": "2026-11-10T19:17:05.124Z"
+      },
+      {
+        "action": "sdd_move",
+        "result": "passed",
+        "detail": "Carpeta SDD movida de sdd/wip/4-auth-login-jwt-stateless a sdd/features/4-auth-login-jwt-stateless",
+        "artifact_count": 7,
+        "at": "2026-11-10T19:17:05.124Z"
+      },
+      {
+        "action": "complete",
+        "result": "passed",
+        "detail": "Integridad verificada; status archived escrito",
+        "at": "2026-11-10T19:17:05.124Z"
+      }
+    ],
+    "error": null,
+    "completed_at": "2026-11-10T19:17:05.124Z"
+  },
+  "verification": {
+    "status": "pass",
+    "inputs": {
+      "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+      "technical": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1",
+      "plan_metadata": "fbc2f17d862ca466f4abfa2504df484dd55949675e5c3b567821a6cb5838ab6a",
+      "tasks": "ee7e75764a867caeeda6c478000b5b50df9d82b06849f9e33d18b23d4317d201",
+      "tasks_projection": "d6f3dc1c43320abec6f932f8a90d4a7c22c293479ffb48d96be6e7af550da33f",
+      "code_sha256": null
+    },
+    "evidence": [
+      {
+        "kind": "openspec_validate",
+        "result": "passed",
+        "details": "Change 'sdd-4-auth-login-jwt-stateless' is valid",
+        "at": "2026-11-10T19:05:31.027Z"
+      },
+      {
+        "kind": "build",
+        "result": "passed",
+        "details": "nest build exitoso sin errores",
+        "at": "2026-11-10T19:04:00Z"
+      },
+      {
+        "kind": "tests",
+        "result": "passed",
+        "details": "20 tests (5 unit + 15 e2e), 0 fallos",
+        "test_files": [
+          "test/login.unit.test.mjs",
+          "test/register.unit.test.mjs",
+          "test/ping.e2e.test.mjs",
+          "test/register.e2e.test.mjs"
+        ],
+        "at": "2026-11-10T19:05:31.027Z"
+      }
+    ]
+  },
+  "history": [
+    {
+      "at": "2026-11-10T16:50:16.022Z",
+      "event": "feature_created",
+      "status": "drafting_functional"
+    },
+    {
+      "at": "2026-11-10T16:50:16.022Z",
+      "event": "functional_ready",
+      "from": "drafting_functional",
+      "to": "pending_functional_review"
+    },
+    {
+      "at": "2026-11-10T16:55:00.000Z",
+      "event": "openspec_integrated",
+      "detail": "Cambio OpenSpec creado, proposal y 3 delta specs validadas con openspec validate",
+      "status": "pending_functional_review"
+    },
+    {
+      "at": "2026-11-10T18:07:30.110Z",
+      "event": "functional_approved",
+      "operation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "artifact_sha256": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330"
+    },
+    {
+      "at": "2026-11-10T18:07:30.110Z",
+      "event": "technical_ready",
+      "from": "pending_functional_review",
+      "to": "pending_technical_review",
+      "operation_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    {
+      "at": "2026-11-10T18:55:02.813Z",
+      "event": "technical_approved",
+      "operation_id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+      "artifact_sha256": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1"
+    },
+    {
+      "at": "2026-11-10T18:55:02.813Z",
+      "event": "tasks_ready",
+      "from": "pending_technical_review",
+      "to": "ready_for_implementation",
+      "operation_id": "b2c3d4e5-f6a7-8901-bcde-f23456789012"
+    },
+    {
+      "at": "2026-11-10T19:02:22.457Z",
+      "event": "implementation_started",
+      "from": "ready_for_implementation",
+      "to": "implementing",
+      "operation_id": "c3d4e5f6-a7b8-9012-cdef-345678901234"
+    },
+    {
+      "at": "2026-11-10T19:05:31.027Z",
+      "event": "implementation_completed",
+      "from": "implementing",
+      "to": "merging_specs",
+      "operation_id": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+      "detail": "8 tareas done, 20 tests pasados, OpenSpec validado"
+    },
+    {
+      "at": "2026-11-10T19:05:31.027Z",
+      "event": "implementation_verified",
+      "from": "implementing",
+      "to": "merging_specs",
+      "operation_id": "c3d4e5f6-a7b8-9012-cdef-345678901234"
+    },
+    {
+      "at": "2026-11-10T19:17:05.124Z",
+      "event": "archive_started",
+      "from": "merging_specs",
+      "operation_id": "d4e5f6a7-b8c9-0123-def4-567890123456"
+    },
+    {
+      "at": "2026-11-10T19:17:05.124Z",
+      "event": "feature_archived",
+      "from": "merging_specs",
+      "to": "archived",
+      "operation_id": "d4e5f6a7-b8c9-0123-def4-567890123456"
+    }
+  ],
+  "completed_operations": [
+    {
+      "id": "9c6b3110-67c2-4251-87e2-66b5b0c9ef7c",
+      "command": "init",
+      "phase": "complete",
+      "started_at": "2026-11-10T16:50:16.022Z",
+      "input_hashes": {
+        "description": "e2e9174a1cbc3384386a8998cf2c601639a850e8e0c6cc1ae9d4ea25dad0e77a"
+      },
+      "receipts": [
+        {
+          "action": "reserve_identity",
+          "path": "sdd/wip/4-auth-login-jwt-stateless",
+          "result": "created",
+          "at": "2026-11-10T16:50:16.022Z"
+        },
+        {
+          "action": "write_functional",
+          "path": "sdd/wip/4-auth-login-jwt-stateless/functional/functional.md",
+          "result": "created",
+          "output_sha256": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+          "at": "2026-11-10T16:50:16.022Z"
+        },
+        {
+          "action": "openspec_new_change",
+          "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless",
+          "result": "created",
+          "at": "2026-11-10T16:55:00.000Z"
+        },
+        {
+          "action": "write_proposal",
+          "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/proposal.md",
+          "result": "created",
+          "output_sha256": "fd0c72d9dbaf1ae33a7396c9779b0d474cb8a57600efcaa423b7a2ea534a95a5",
+          "at": "2026-11-10T16:55:00.000Z"
+        },
+        {
+          "action": "write_delta_spec",
+          "capability": "auth-login",
+          "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/specs/auth-login/spec.md",
+          "result": "created",
+          "output_sha256": "4316a2b2ad8a4eacb3c925f5848468ac56fbb22396b374fdaeaa5f698256ed5a",
+          "at": "2026-11-10T16:55:00.000Z"
+        },
+        {
+          "action": "write_delta_spec",
+          "capability": "auth-logout",
+          "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/specs/auth-logout/spec.md",
+          "result": "created",
+          "output_sha256": "ccd537e21fbe419c34b1e0a478a14684901811c805fe9f188ec05f308609d193",
+          "at": "2026-11-10T16:55:00.000Z"
+        },
+        {
+          "action": "write_delta_spec",
+          "capability": "auth-guard",
+          "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/specs/auth-guard/spec.md",
+          "result": "created",
+          "output_sha256": "7745795570fa0a532b8f8c5d43f5994a3cb56f9cb34572642632dff34bb1fee3",
+          "at": "2026-11-10T16:55:00.000Z"
+        },
+        {
+          "action": "validate_functional_and_projections",
+          "result": "passed",
+          "requirement_ids": [
+            "R006",
+            "R007",
+            "R008",
+            "R009",
+            "R010"
+          ],
+          "command": "openspec validate sdd-4-auth-login-jwt-stateless --json --no-interactive",
+          "at": "2026-11-10T16:55:00.000Z"
+        }
+      ],
+      "error": null,
+      "completed_at": "2026-11-10T16:55:00.000Z"
+    },
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "command": "approve_functional",
+      "phase": "complete",
+      "started_at": "2026-11-10T18:07:30.110Z",
+      "input_hashes": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+        "global_technical": "9cd7ebce45ffb717b47059feb5c5887e1634dcb6804d12449662f437aa8bfb0a"
+      },
+      "receipts": [
+        {
+          "action": "approve_functional",
+          "artifact_sha256": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+          "result": "approved",
+          "at": "2026-11-10T18:07:30.110Z"
+        },
+        {
+          "action": "write_technical_and_projection",
+          "paths": [
+            "sdd/wip/4-auth-login-jwt-stateless/technical/technical.md",
+            "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/design.md"
+          ],
+          "result": "created",
+          "output_sha256": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1",
+          "at": "2026-11-10T18:07:30.110Z"
+        },
+        {
+          "action": "validate_technical_and_projection",
+          "result": "passed",
+          "requirement_ids": [
+            "R006",
+            "R007",
+            "R008",
+            "R009",
+            "R010"
+          ],
+          "at": "2026-11-10T18:07:30.110Z"
+        },
+        {
+          "action": "openspec_validate",
+          "command": "openspec validate sdd-4-auth-login-jwt-stateless --json --no-interactive",
+          "result": "passed",
+          "issues": [],
+          "at": "2026-11-10T18:07:30.110Z"
+        }
+      ],
+      "error": null,
+      "completed_at": "2026-11-10T18:07:30.110Z"
+    },
+    {
+      "id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+      "command": "approve_technical",
+      "phase": "complete",
+      "started_at": "2026-11-10T18:55:02.813Z",
+      "input_hashes": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+        "technical": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1"
+      },
+      "receipts": [
+        {
+          "action": "approve_technical",
+          "artifact_sha256": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1",
+          "result": "approved",
+          "at": "2026-11-10T18:55:02.813Z"
+        },
+        {
+          "action": "write_plan_metadata",
+          "path": "sdd/wip/4-auth-login-jwt-stateless/plan/metadata.json",
+          "result": "created",
+          "output_sha256": "fbc2f17d862ca466f4abfa2504df484dd55949675e5c3b567821a6cb5838ab6a",
+          "at": "2026-11-10T18:55:02.813Z"
+        },
+        {
+          "action": "write_tasks",
+          "path": "sdd/wip/4-auth-login-jwt-stateless/tasks/tasks.json",
+          "result": "created",
+          "output_sha256": "5e72e86f7b79577badb20f618bf7b0c4e2f4264d30b0071db12b5e7984f728a6",
+          "at": "2026-11-10T18:55:02.813Z"
+        },
+        {
+          "action": "write_tasks_projection",
+          "path": "openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/tasks.md",
+          "result": "created",
+          "output_sha256": "61fe1105731d5059e1f470e7cf21728a0ee7e7b723c8bdd2d0d3f16a0ffdb310",
+          "at": "2026-11-10T18:55:02.813Z"
+        },
+        {
+          "action": "validate_tasks_and_plan_metadata",
+          "result": "passed",
+          "total_tasks": 8,
+          "dependency_graph": "acyclic",
+          "requirements": [
+            "R006",
+            "R007",
+            "R008",
+            "R009",
+            "R010"
+          ],
+          "at": "2026-11-10T18:55:02.813Z"
+        },
+        {
+          "action": "openspec_validate",
+          "command": "openspec validate sdd-4-auth-login-jwt-stateless --json --no-interactive",
+          "result": "passed",
+          "issues": [],
+          "at": "2026-11-10T18:55:02.813Z"
+        }
+      ],
+      "error": null,
+      "completed_at": "2026-11-10T18:55:02.813Z"
+    },
+    {
+      "id": "d4e5f6a7-b8c9-0123-def4-567890123456",
+      "command": "archive",
+      "phase": "complete",
+      "started_at": "2026-11-10T19:17:05.124Z",
+      "input_hashes": {
+        "functional": "947f27d9281cd51a05052281343f3c3092a3de661290a570320ca64225961330",
+        "technical": "cccb377134aa4dc9e743bfb2c78e8ebdca074841beddb190cec6fdbb496ba2e1",
+        "tasks": "ee7e75764a867caeeda6c478000b5b50df9d82b06849f9e33d18b23d4317d201",
+        "code_sha256": null
+      },
+      "receipts": [
+        {
+          "action": "prepare",
+          "result": "passed",
+          "detail": "Inputs verificados, destino sdd/features/4-auth-login-jwt-stateless libre, sin conflictos",
+          "at": "2026-11-10T19:17:05.124Z"
+        },
+        {
+          "action": "sync",
+          "result": "passed",
+          "detail": "3 main specs creados en openspec/specs/ (auth-login, auth-logout, auth-guard); openspec validate --specs: 3/3 passed",
+          "at": "2026-11-10T19:17:05.124Z"
+        },
+        {
+          "action": "globals",
+          "result": "passed",
+          "detail": "sdd/specs/functional/global_functional.md y sdd/specs/technical/global_technical.md actualizadas con las capacidades auth-login, auth-logout, auth-guard",
+          "at": "2026-11-10T19:17:05.124Z"
+        },
+        {
+          "action": "openspec_archive",
+          "result": "passed",
+          "detail": "Cambio OpenSpec movido a openspec/changes/archive/2026-11-10-sdd-4-auth-login-jwt-stateless/",
+          "path": "C:\\Users\\johan\\OneDrive\\Documentos\\GitHub\\Nexo\\openspec\\changes\\archive\\2026-11-10-sdd-4-auth-login-jwt-stateless",
+          "at": "2026-11-10T19:17:05.124Z"
+        },
+        {
+          "action": "sdd_move",
+          "result": "passed",
+          "detail": "Carpeta SDD movida de sdd/wip/4-auth-login-jwt-stateless a sdd/features/4-auth-login-jwt-stateless",
+          "artifact_count": 7,
+          "at": "2026-11-10T19:17:05.124Z"
+        },
+        {
+          "action": "complete",
+          "result": "passed",
+          "detail": "Integridad verificada; status archived escrito",
+          "at": "2026-11-10T19:17:05.124Z"
+        }
+      ],
+      "error": null,
+      "completed_at": "2026-11-10T19:17:05.124Z"
+    }
+  ]
+}

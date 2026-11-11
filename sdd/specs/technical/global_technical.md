@@ -25,3 +25,13 @@ Decisiones técnicas vigentes consolidadas de la feature inicial. Los detalles y
 - Usar las APIs nativas `node:test`, `node:assert` y `fetch` para pruebas HTTP de extremo a extremo sobre la fábrica compartida y puertos dinámicos.
 - Mantener comandos portables para desarrollo, build, producción y pruebas documentados en README; no depender de CLI Nest global.
 - La feature de origen está archivada en [1-initial-scaffolding](../../features/1-initial-scaffolding/technical/technical.md).
+
+## Autenticación JWT (feature 4-auth-login-jwt-stateless)
+
+- `AuthModule` registra `JwtAuthGuard` como `APP_GUARD` global en `AppModule`; todas las rutas requieren autenticación salvo las marcadas con `@Public()`.
+- `POST /auth/login` valida credenciales (hash de contraseña vs. base de datos y correo confirmado) y emite un JWT firmado HS256 con payload mínimo `sub` (ID) y `role` (rol).
+- `POST /auth/logout` confirma el cierre de sesión; es stateless (el cliente descarta el token, no hay lista negra en el servidor).
+- `JWT_SECRET` (mínimo 32 bytes) y `JWT_EXPIRATION` se leen de variables de entorno; nunca se codifican en el repositorio.
+- El decorador `@Public()` establece metadatos `isPublic = true` para eximir rutas específicas (p. ej. `GET /ping` permanece público).
+- `JwtAuthGuard` verifica la firma, el algoritmo HS256, el secreto y la expiración `exp` del token antes de llegar al controlador; devuelve `401 Unauthorized` ante cualquier fallo.
+

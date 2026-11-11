@@ -44,6 +44,13 @@ async function post(path, body) {
     headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
 }
 
+function decodeJwtPayload(token) {
+  const parts = token.split('.');
+  if (parts.length !== 3) throw new Error('No es un JWT');
+  const decoded = Buffer.from(parts[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64');
+  return JSON.parse(decoded.toString('utf8'));
+}
+
 test('POST /auth/register valida, crea estudiante y deriva la contraseña', async () => {
   const response = await post('/auth/register', valid);
   assert.equal(response.status, 201);
@@ -115,4 +122,44 @@ test('acepta 72 bytes UTF-8 y rechaza 73 bytes en registro y login', async () =>
     { ...identity, nickname: 'ByteLimit_2', studentCode: '20231515044', password: password73Bytes })).status, 400);
   assert.equal((await post('/auth/login',
     { email: identity.email, password: password73Bytes })).status, 400);
+});
+
+test('el token de login incluye role en el payload', async () => {
+  const login = await post('/auth/login', { email: valid.email, password: valid.password });
+  assert.equal(login.status, 200);
+  const { accessToken } = await login.json();
+  const payload = decodeJwtPayload(accessToken);
+  assert.equal(payload.sub, '1');
+  assert.equal(payload.role, 'ESTUDIANTE');
+});
+
+test('POST /auth/logout confirma el cierre de sesión', async () => {
+  const response = await post('/auth/logout', {});
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.message, 'Sesión cerrada. Descarta el token almacenado.');
+});
+
+test('rechaza JWT con payload alterado sin firma recalculada', async () => {
+  const login = await post('/auth/login', { email: valid.email, password: valid.password });
+  assert.equal(login.status, 200);
+  const { accessToken } = await login.json();
+  const parts = accessToken.split('.');
+  const alteredPayload = Buffer.from(JSON.stringify({ sub: '1', role: 'ADMINISTRADOR' }))
+    .toString('base64')
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const alteredToken = `${parts[0]}.${alteredPayload}.${parts[2]}`;
+  const response = await fetch(`${baseUrl}/auth/me`, {
+    headers: { authorization: `Bearer ${alteredToken}` }
+  });
+  assert.equal(response.status, 401);
+});
+
+test('rechaza JWT firmado con secreto distinto', async () => {
+  const wrong = await new JwtService().signAsync({ sub: '1', role: 'ESTUDIANTE' },
+    { secret: 'wrong-secret-with-at-least-thirty-two-bytes', expiresIn: '1h', algorithm: 'HS256' });
+  const response = await fetch(`${baseUrl}/auth/me`, {
+    headers: { authorization: `Bearer ${wrong}` }
+  });
+  assert.equal(response.status, 401);
 });
