@@ -40,4 +40,13 @@ export class AuthController {
   me(@Req() request: { user: AuthenticatedUser }): AuthenticatedUser {
     return request.user;
   }
+
+  @Post('logout')
+  @Public()
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Cerrar sesión del cliente' })
+  @ApiResponse({ status: 200, description: 'Sesión cerrada; el cliente debe descartar el token.' })
+  logout(): Promise<{ message: string }> {
+    return Promise.resolve({ message: 'Sesión cerrada. Descarta el token almacenado.' });
+  }
 }

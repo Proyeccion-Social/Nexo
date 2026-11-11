@@ -38,7 +38,7 @@ export class LoginService {
     if (!user?.active || !validPassword) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
-    const accessToken = await this.jwt.signAsync({ sub: user.id },
+    const accessToken = await this.jwt.signAsync({ sub: user.id, role: user.role },
       { secret: signingSecret(), expiresIn: '1h', algorithm: 'HS256' });
     return { accessToken, tokenType: 'Bearer', expiresIn: 3600 };
   }
